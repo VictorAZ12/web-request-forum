@@ -7,6 +7,11 @@ import os
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+
+
+# Import models and create tables
+from app import models
 with app.app_context():
     db_path = app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')
     if not os.path.exists(db_path):
@@ -14,7 +19,5 @@ with app.app_context():
         print("Database created successfully.")
     else:
         print("Database already exists.")
-
-bcrypt = Bcrypt(app)
 
 from app import routes
