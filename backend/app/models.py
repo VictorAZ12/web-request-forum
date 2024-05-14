@@ -1,7 +1,8 @@
 from datetime import datetime
 from app import db, bcrypt
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     uid = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=False)
     dob = db.Column(db.Date)
