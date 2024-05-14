@@ -11,6 +11,16 @@ class User(db.Model):
     public = db.Column(db.Boolean, default=True)
     def __repr__(self):
         return f"User('{self.uid}', '{self.fullname}')"
+    def to_dict(self):
+        return {
+            'uid': self.uid,
+            'fullname': self.fullname,
+            'dob': self.dob.strftime('%Y-%m-%d') if self.dob else None,
+            'address': self.address,
+            'last_login': self.last_login.strftime('%Y-%m-%d %H:%M:%S') if self.last_login else None,
+            'create_date': self.create_date.strftime('%Y-%m-%d %H:%M:%S') if self.create_date else None,
+            'public': self.public
+        }
 
 class Authentication(db.Model):
     aid = db.Column(db.Integer, primary_key=True)
@@ -68,6 +78,14 @@ class Challenge(db.Model):
     content = db.Column(db.Text)
     public = db.Column(db.Boolean, default=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'content': self.content,
+            'creator_id': self.creator_id,
+            'public': self.public
+        }
 
 class UserChallenge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
