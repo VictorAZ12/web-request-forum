@@ -40,6 +40,30 @@ def register():
         return redirect(url_for('index'))
     return render_template('register.html')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Login page"""
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        # check existence
+        user = User.query.filter_by(email=email).first()
+        if user and bcrypt.check_password_hash(user.hashed_password, password):
+            login_user(user)
+
+            return redirect(url_for('protected'))
+        else:
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+    return render_template('login.html')
+
+@app.route('/logout', methods=['GET'])
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 # APIs
 
 @app.route('/api/users', methods=['GET'])

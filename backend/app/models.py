@@ -33,7 +33,8 @@ class User(db.Model, UserMixin):
             'public': self.public
         }
     def get_id(self):
-        return str(self.id)
+        """Overwrite get_id in UserMixin"""
+        return str(self.uid)
     def __eq__(self, other):
         """
         Checks the equality of two `UserMixin` objects using `get_id`.
