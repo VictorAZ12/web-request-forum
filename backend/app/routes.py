@@ -1,9 +1,12 @@
-from flask import redirect, url_for, request, jsonify
-from app import app, db
+from flask import redirect, url_for, request, jsonify, flash, render_template
+from app import app, db, bcrypt
+from app.models import User, UserChallenge, Challenge
+from flask_login import login_user, current_user, logout_user, login_required
 # Pages
 @app.route('/')
 def index():
     """Returns homepage html"""
+    flash("Welcome to web app homepage!")
     return "Welcome to web app homepage!"
 
 # Test only login protected page
@@ -84,4 +87,3 @@ def get_user_challenges():
 
     user_challenges = [uc.challenge_id for uc in UserChallenge.query.filter_by(user_id=uid).all()]
     return jsonify(user_challenges)
-
