@@ -2,16 +2,26 @@ from datetime import datetime
 from app import db, bcrypt
 from flask_login import UserMixin
 
+
+
 class User(db.Model, UserMixin):
+
     uid = db.Column(db.Integer, primary_key=True)
-    fullname = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), nullable=False)
+    fullname = db.Column(db.String(100))
     dob = db.Column(db.Date)
     address = db.Column(db.String(200))
     last_login = db.Column(db.DateTime, default=datetime.utcnow)
     create_date = db.Column(db.DateTime, default=datetime.utcnow)
     public = db.Column(db.Boolean, default=True)
+    # Authentication attributes
+    # is_active, is_authenticated,  get_id() provided by UserMixin
+    hashed_password = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+
     def __repr__(self):
-        return f"User('{self.uid}', '{self.fullname}')"
+        return f"User('{self.uid}', '{self.username}')"
     def to_dict(self):
         return {
             'uid': self.uid,
@@ -22,20 +32,25 @@ class User(db.Model, UserMixin):
             'create_date': self.create_date.strftime('%Y-%m-%d %H:%M:%S') if self.create_date else None,
             'public': self.public
         }
+    def get_id(self):
+        return str(self.id)
+    def __eq__(self, other):
+        """
+        Checks the equality of two `UserMixin` objects using `get_id`.
+        """
+        if isinstance(other, UserMixin):
+            return self.get_id() == other.get_id()
 
-class Authentication(db.Model):
-    aid = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    expiry_date = db.Column(db.DateTime, default=datetime.utcnow)
-    expired = db.Column(db.Boolean, default=False)
+    def __ne__(self, other):
+        """
+        Checks the inequality of two `UserMixin` objects using `get_id`.
+        """
+        equal = self.__eq__(other)
+        return not equal
 
-    def set_password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password_hash, password)
+
+
 
 class Follow(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('user.uid'), primary_key=True)

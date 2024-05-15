@@ -22,7 +22,9 @@ with app.app_context():
 
 # Create Login
 login_manager = LoginManager(app)
+# User loader
 @login_manager.user_loader
 def load_user(user_id):
     return models.User.get(user_id)
+
 from app import routes
