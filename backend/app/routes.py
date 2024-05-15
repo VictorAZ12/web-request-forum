@@ -17,72 +17,52 @@ def home():
 def protected():
     return "You're logged in and can access this protected page"
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegisterForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        email = form.email.data
-        password = form.password.data
-        confirm_password = form.confirm_password.data
-        if password != confirm_password:
-            flash("Different passwords are provided!")
+    """Register route"""
+    register_form = RegisterForm()
+    if register_form.validate_on_submit():
+        email = register_form.email.data
+        username = register_form.username.data
+        password = register_form.password.data
         # check existence
         existing_email_user = User.query.filter_by(email=email).first()
-        existing_username_user = User.query.filter_by(username=username).first()
         if existing_email_user:
-            flash('Email is already registered. Please choose a different one.', 'danger')
-            return redirect(url_for('register'))
+            return "Email exists!"
+        existing_username_user = User.query.filter_by(username=username).first()
         if existing_username_user:
-            flash('Username is already registered. Please choose a different one.', 'danger')
-            return redirect(url_for('register'))
+            return "Username exists!"
+
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        user = User(username=username, email=email, hashed_password=hashed_password)
+        user = User(email=email, username=username, hashed_password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        flash('Your account has been created! You can now log in', 'success')
-        return redirect(url_for('index'))
-    return render_template('register.html', form = form)
+        return('Your account has been created! You can now log in', 'success')
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     """Login page"""
-#     if current_user.is_authenticated:
-#         return redirect(url_for('index'))
-#     if request.method == 'POST':
-#         email = request.form.get('email')
-#         password = request.form.get('password')
-#         # check existence
-#         user = User.query.filter_by(email=email).first()
-#         if user and bcrypt.check_password_hash(user.hashed_password, password):
-#             login_user(user)
 
-#             return redirect(url_for('protected'))
-#         else:
-#             flash('Login Unsuccessful. Please check email and password', 'danger')
-#     return render_template('login.html')
-
-@app.route('/index', methods=['GET', 'POST'])
-def index():
-    """Login page"""
-    form = LoginForm()
-    if form.validate_on_submit():
-        # Here, you would add your authentication logic (e.g., checking the username and password)
-        email = form.email.data
-        password = form.password.data
-        print(email, password)
+@app.route('/login', methods=['POST'])
+def login():
+    """Login route"""
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        email = login_form.email.data
+        password = login_form.password.data
         # check existence
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.hashed_password, password):
             login_user(user)
             return redirect(url_for('protected'))
         else:
-            print('Login Unsuccessful. Please check email and password')
-            return redirect(url_for('index'))
+            return 'Login Unsuccessful. Please check email and password'
 
-    return render_template('HabitNest.html', form = form)
+
+
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    """Index page with login and register forms"""
+    login_form = LoginForm()
+    register_form = RegisterForm()
+    return render_template('HabitNest.html', login_form = login_form, register_form = register_form)
 
 
 @app.route('/logout', methods=['GET'])
