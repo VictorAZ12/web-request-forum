@@ -10,7 +10,35 @@ class User(db.Model):
     create_date = db.Column(db.DateTime, default=datetime.utcnow)
     public = db.Column(db.Boolean, default=True)
     def __repr__(self):
-        return f"User('{self.uid}', '{self.fullname}')"
+
+        return f"User('{self.uid}', '{self.username}')"
+    def to_dict(self):
+        return {
+            'uid': self.uid,
+            'fullname': self.fullname,
+            'dob': self.dob.strftime('%Y-%m-%d') if self.dob else None,
+            'address': self.address,
+            'last_login': self.last_login.strftime('%Y-%m-%d %H:%M:%S') if self.last_login else None,
+            'create_date': self.create_date.strftime('%Y-%m-%d %H:%M:%S') if self.create_date else None,
+            'public': self.public
+        }
+    def get_id(self):
+        """Overwrite get_id in UserMixin"""
+        return str(self.uid)
+    def __eq__(self, other):
+        """
+        Checks the equality of two `UserMixin` objects using `get_id`.
+        """
+        if isinstance(other, UserMixin):
+            return self.get_id() == other.get_id()
+
+    def __ne__(self, other):
+        """
+        Checks the inequality of two `UserMixin` objects using `get_id`.
+        """
+        equal = self.__eq__(other)
+        return not equal
+
 
 class Authentication(db.Model):
     aid = db.Column(db.Integer, primary_key=True)
