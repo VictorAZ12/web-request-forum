@@ -2,9 +2,11 @@ from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
 from app.models import User, UserChallenge, Challenge
 from flask_login import login_user, current_user, logout_user, login_required
+from app.forms import LoginForm, RegisterForm
 # Pages
 @app.route('/')
-def index():
+@login_required
+def home():
     """Returns homepage html"""
     flash("Welcome to web app homepage!")
     return "Welcome to web app homepage!"
@@ -19,10 +21,14 @@ def protected():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        password = request.form.get('password')
+    form = RegisterForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
+        confirm_password = form.confirm_password.data
+        if password != confirm_password:
+            flash("Different passwords are provided!")
         # check existence
         existing_email_user = User.query.filter_by(email=email).first()
         existing_username_user = User.query.filter_by(username=username).first()
@@ -38,25 +44,46 @@ def register():
         db.session.commit()
         flash('Your account has been created! You can now log in', 'success')
         return redirect(url_for('index'))
-    return render_template('register.html')
+    return render_template('register.html', form = form)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     """Login page"""
+#     if current_user.is_authenticated:
+#         return redirect(url_for('index'))
+#     if request.method == 'POST':
+#         email = request.form.get('email')
+#         password = request.form.get('password')
+#         # check existence
+#         user = User.query.filter_by(email=email).first()
+#         if user and bcrypt.check_password_hash(user.hashed_password, password):
+#             login_user(user)
+
+#             return redirect(url_for('protected'))
+#         else:
+#             flash('Login Unsuccessful. Please check email and password', 'danger')
+#     return render_template('login.html')
+
+@app.route('/index', methods=['GET', 'POST'])
+def index():
     """Login page"""
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    form = LoginForm()
+    if form.validate_on_submit():
+        # Here, you would add your authentication logic (e.g., checking the username and password)
+        email = form.email.data
+        password = form.password.data
+        print(email, password)
         # check existence
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.hashed_password, password):
             login_user(user)
-
             return redirect(url_for('protected'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html')
+            print('Login Unsuccessful. Please check email and password')
+            return redirect(url_for('index'))
+
+    return render_template('HabitNest.html', form = form)
+
 
 @app.route('/logout', methods=['GET'])
 @app.route('/logout')
