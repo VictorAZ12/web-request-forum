@@ -80,7 +80,21 @@ def settings():
     return render_template('settings.html')
 
 # APIs
-
+@app.route('/api/habits', methods=['GET'])
+@login_required
+def get_habits():
+    """Retrieve all habits of current user"""
+    user_id = current_user.get_id()
+    user_habits = Habit.query.filter_by(user_id=user_id).all()
+    result = []
+    for habit in user_habits:
+        result.append({
+            "user_id": habit.user_id,
+            "habit_name": habit.habit_name,
+            "description": habit.description,
+            "target_date": habit.target_date,
+        })
+    return jsonify(result)
 
 @app.route('/api/add_habit', methods=['POST'])
 @login_required
