@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DateField
+from wtforms import StringField, PasswordField, SubmitField, DateField, BooleanField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -18,3 +18,9 @@ class HabitForm(FlaskForm):
     description = StringField('Description', default="")
     target_date = DateField('Target date', validators=[DataRequired()])
     submit = SubmitField('Add habit')
+
+class ChallengeForm(FlaskForm):
+    challenge_name = StringField('Challenge name', validators=[DataRequired()])
+    content = StringField('Content', validators=[DataRequired()])
+    public = BooleanField('Public?')
+    submit = SubmitField('Create challenge')

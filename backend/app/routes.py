@@ -2,7 +2,7 @@ from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
 from app.models import User, UserChallenge, Challenge, Habit
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegisterForm, HabitForm
+from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm
 # Pages
 @app.route('/')
 @login_required
@@ -73,7 +73,10 @@ def logout():
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
     habit_form = HabitForm()
-    return render_template('Dashboard.html', habit_form = habit_form)
+    challenge_form = ChallengeForm()
+    return render_template('Dashboard.html', 
+                           habit_form = habit_form,
+                           challenge_form = challenge_form)
 
 @app.route('/settings', methods=['GET'])
 def settings():
@@ -104,8 +107,6 @@ def add_habit():
         habit_name = habit_form.habit_name.data
         description = habit_form.description.data
         target_date = habit_form.target_date.data
-        print([habit_name, description, target_date])
-        print(current_user.get_id())
         habit = Habit(user_id=current_user.get_id(),
                       habit_name=habit_name,
                       description=description,
@@ -114,6 +115,21 @@ def add_habit():
         db.session.commit()
         return redirect(url_for("dashboard"))
 
+@app.route('/api/add_challenge', methods=['POST'])
+@login_required
+def add_challenge():
+    challenge_form = ChallengeForm()
+    if challenge_form.validate_on_submit():
+        challenge_name = challenge_form.challenge_name.data
+        content = challenge_form.content.data
+        public = challenge_form.public.data
+        challenge = Challenge(creator_id=current_user.get_id(),
+                          name=challenge_name,
+                          content=content,
+                          public=public)
+        db.session.add(challenge)
+        db.session.commit()
+        return redirect(url_for("dashboard"))
 
 @app.route('/api/users', methods=['GET'])
 def get_users():

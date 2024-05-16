@@ -56,18 +56,15 @@
     <div id="challengeModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeChallengeModal()">&times;</span>
-            <form id="newChallengeForm" method="POST">
-                {#
+            <form id="newChallengeForm" method="POST" action="{{ url_for('add_challenge')}}">
+                
                 {{ challenge_form.hidden_tag() }}
                 {{ challenge_form.challenge_name.label }} {{ challenge_form.challenge_name }}
-                {{ challenge_form.habit_name.label }} {{ challenge_form.habit_name }}
-                {{ challenge_form.goal.label }} {{ challenge_form.goal }}
-                {{ challenge_form.unit.label }} {{ challenge_form.unit }}
-                {{ challenge_form.start_date.label }} {{ challenge_form.start_date }}
+                {{ challenge_form.content.label }} {{ challenge_form.content }}
+                {{ challenge_form.public.label }} {{ challenge_form.public }}
                 {{ challenge_form.submit(class="save-btn") }}
-                {{ challenge_form.cancel(class="cancel-btn", onclick="closeChallengeModal()") }}
-                {{ challenge_form.delete(class="delete-btn hidden", onclick="deleteChallenge()") }}
-                #}
+                
+                <button type="button" class="cancel-btn", onclick=closeChallengeModal()>Cancel</button>
             </form>
         </div>
     </div>
