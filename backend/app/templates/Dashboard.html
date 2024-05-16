@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitNest Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <img src="{{ url_for('static', filename='Media/Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img" id="profileImageDisplay">
+            <h2 id="username">Hung Hoang</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="active"><a href="{{ url_for('dashboard') }}">All Habits</a></li>
+            <li><a href="{{ url_for('settings') }}">Settings</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>All Habits</h1>
+        <button class="add-habit-btn" onclick="showModal()">Add Habit</button>
+        <div id="habitsContainer"></div>
+        <h2>Community Challenges</h2>
+        <button class="add-challenge-btn" onclick="showChallengeModal()">Add Challenge</button>
+        <div id="activeChallenges">
+            <h3>Active Challenges</h3>
+        </div>
+        <div id="futureChallenges">
+            <h3>Future Challenges</h3>
+        </div>
+        <div id="successContainer" class="status-container">
+            <h3>Successful Habits</h3>
+        </div>
+        <div id="failContainer" class="status-container">
+            <h3>Failed Habits</h3>
+        </div>
+    </div>
+
+    <!-- Habit Modal -->
+    <div id="habitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <form id="newHabitForm" method="POST">
+                {{ habit_form.hidden_tag() }}
+                {{ habit_form.habit_name.label }} {{ habit_form.habit_name }}
+                {{ habit_form.goal.label }} {{ habit_form.goal }}
+                {{ habit_form.unit.label }} {{ habit_form.unit }}
+                {{ habit_form.start_date.label }} {{ habit_form.start_date }}
+                {{ habit_form.make_challenge.label }} {{ habit_form.make_challenge }}
+                {{ habit_form.submit(class="save-btn") }}
+                {{ habit_form.cancel(class="cancel-btn", onclick="closeModal()") }}
+                {{ habit_form.delete(class="delete-btn hidden", onclick="deleteHabit()") }}
+            </form>
+        </div>
+    </div>
+
+    <!-- Challenge Modal -->
+    <div id="challengeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChallengeModal()">&times;</span>
+            <form id="newChallengeForm" method="POST">
+                {{ challenge_form.hidden_tag() }}
+                {{ challenge_form.challenge_name.label }} {{ challenge_form.challenge_name }}
+                {{ challenge_form.habit_name.label }} {{ challenge_form.habit_name }}
+                {{ challenge_form.goal.label }} {{ challenge_form.goal }}
+                {{ challenge_form.unit.label }} {{ challenge_form.unit }}
+                {{ challenge_form.start_date.label }} {{ challenge_form.start_date }}
+                {{ challenge_form.submit(class="save-btn") }}
+                {{ challenge_form.cancel(class="cancel-btn", onclick="closeChallengeModal()") }}
+                {{ challenge_form.delete(class="delete-btn hidden", onclick="deleteChallenge()") }}
+            </form>
+        </div>
+    </div>
+
+    <!-- View Challenge Modal -->
+    <div id="viewChallengeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeViewChallengeModal()">&times;</span>
+            <div id="viewChallengeDetails"></div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p id="confirmMessage"></p>
+            <button id="confirmOkBtn" class="save-btn">OK</button>
+            <button id="confirmCancelBtn" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='Javascript/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='Javascript/challenge-script.js') }}"></script>
+</body>
+</html>
