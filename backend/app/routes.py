@@ -115,6 +115,29 @@ def add_habit():
         db.session.commit()
         return redirect(url_for("dashboard"))
 
+@app.route('/api/challenges', methods=['GET'])
+@login_required
+def get_challenges():
+    """Retrieve all challenges: public and user's private ones"""
+    user_id = current_user.get_id()
+    created_challenges = Challenge.query.filter_by(creator_id=user_id).all()
+    public_challenges = Challenge.query.filter_by(public=True).all()
+    user_challenges = created_challenges + public_challenges
+    result = []
+    existing_challenges = []
+    for challenge in user_challenges:
+        if challenge.id not in existing_challenges:
+            result.append({
+                "id": challenge.id,
+                "name": challenge.name,
+                "content": challenge.content,
+                "public": challenge.public,
+                "modifiable": str(challenge.creator_id) == str(user_id)
+            })
+            existing_challenges.append(challenge.id)
+
+    return jsonify(result)
+
 @app.route('/api/add_challenge', methods=['POST'])
 @login_required
 def add_challenge():
