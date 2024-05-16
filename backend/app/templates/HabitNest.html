@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabitNest - Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='HabitNest.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-navigation navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand logo" href="#" id="logo-link">HabitNest</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" id="home-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Habits</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Challenges</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Community</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="login-link">Login</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="teamsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Teams</a>
+                        <div class="dropdown-menu" aria-labelledby="teamsDropdown">
+                            <a class="dropdown-item" href="#">Hung Hoang (22321855)</a>
+                            <a class="dropdown-item" href="#">Jiaqi Li (24062188)</a>
+                            <a class="dropdown-item" href="#">Yanchen Zhao (23453469)</a>
+                            <a class="dropdown-item" href="#">Nikhil Sawant (23882972)</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home-section">
+        <header class="main-header">
+            <div class="container text-center">
+                <h1>Build Better Habits, Build a Better Life</h1>
+                <p>Harness the power of our personalized habit tracker app to streamline your everyday routines and achieve your goals.</p>
+                <a href="#" class="btn btn-primary btn-lg" id="get-started-link">Try Habitify Free</a>
+            </div>
+        </header>
+
+        <!-- Features Section -->
+        <section class="features-section py-5">
+            <div class="container">
+                <h2 class="text-center mb-5">Organize, Execute, Triumph</h2>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <img src="https://i.pinimg.com/originals/b3/95/8a/b3958ae86874283c97190594c68f4775.png" alt="Morning Icon" class="feature-icon">
+                        <h3>Morning</h3>
+                        <ul class="list-unstyled">
+                            <li>Run</li>
+                            <li>Meditate</li>
+                            <li>Plan the day</li>
+                            <li>Read</li>
+                            <li>Hydrate</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://scontent.fper12-1.fna.fbcdn.net/v/t1.6435-9/57191798_2197573377029404_4853694111158370304_n.png?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=YXYK5fReqmIQ7kNvgGP41y7&_nc_ht=scontent.fper12-1.fna&oh=00_AYAw_Zm1EPH5Qq2qWNgIl_m4U6luGzn9bDcpPK2PFsPoHg&oe=6669DFB7" alt="Noon Icon" class="feature-icon">
+                        <h3>Noon</h3>
+                        <ul class="list-unstyled">
+                            <li>Healthy Lunch</li>
+                            <li>Connect with a colleague</li>
+                            <li>Express gratitude</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://www.rikasafrina.com/wp-content/uploads/2019/12/Best-Evening-Routine-Recipe-1024x1024.png" alt="Night Icon" class="feature-icon">
+                        <h3>Night</h3>
+                        <ul class="list-unstyled">
+                            <li>Reflect</li>
+                            <li>Wind Down</li>
+                            <li>Disconnect from screens</li>
+                            <li>Prepare for tomorrow</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section class="progress-section py-5">
+            <div class="container text-center">
+                <h2>Stay Empowered by Your Progress</h2>
+                <p>Scientific studies show that tracking your progress can significantly boost your chances of successfully building and maintaining habits.</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="calendar-icon.png" alt="Calendar Icon" class="progress-icon">
+                        <p>Fuel your journey with insightful metrics, celebrate your milestones, and stay motivated on your path to success.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="streak-icon.png" alt="Streak Icon" class="progress-icon">
+                        <p>Build streaks and maintain consistency in your habit-forming journey.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="completion-icon.png" alt="Completion Icon" class="progress-icon">
+                        <p>Track your yearly progress and see how far you've come in your habit-building endeavors.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenges Section -->
+        <section class="challenges-section py-5">
+            <div class="container text-center">
+                <h2>Level Up the Fun with Challenges</h2>
+                <p>Engage in friendly competitions and participate in monthly challenges to make habit-building a more exhilarating journey.</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="challenge-friends-icon.png" alt="Challenge Friends Icon" class="challenge-icon">
+                        <h3>Challenge your Friends</h3>
+                        <p>Boost your habit-forming journey with a bit of friendly rivalry.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="monthly-challenge-icon.png" alt="Monthly Challenge Icon" class="challenge-icon">
+                        <h3>Join Monthly Challenge</h3>
+                        <p>Climb the leaderboards, make habit formation fun and rewarding.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section class="tools-section py-5">
+            <div class="container text-center">
+                <h2>Innovative Tools for Habit Mastery</h2>
+                <p>Unlock a world of possibilities with our comprehensive toolkit, designed to ensure your success in habit-building.</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="timer-icon.png" alt="Timer Icon" class="tool-icon">
+                        <h3>Built-in Timer</h3>
+                        <p>Our intuitive built-in timer helps you stay focused, improving your productivity and saving you valuable time.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="notes-icon.png" alt="Notes Icon" class="tool-icon">
+                        <h3>Built-in Notes</h3>
+                        <p>Capture and reflect on your thoughts, fostering self-awareness and enabling continuous growth.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="mood-icon.png" alt="Mood Icon" class="tool-icon">
+                        <h3>Mood Tracking</h3>
+                        <p>Track your emotional health, understand its effects on your habits, and create a holistic approach to self-improvement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Stories Section -->
+        <section class="success-stories-section py-5">
+            <div class="container text-center">
+                <h2>Proven Success Stories</h2>
+                <p>Habitify isn't just loved by our users - we've also been recognized by industry leaders. Featured as the App of the Day on the Apple App Store, we're committed to delivering quality, effectiveness, and a platform for genuine transformation.</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <blockquote class="blockquote">
+                            <p>"Habitify isn't about the bells and whistles. Its aim is to cut through the noise to concentrate your mind. The interface is simple and organized, with all your habits presented in a calendar and ordered chronologically, so you can see your day measured out in goals."</p>
+                            <footer class="blockquote-footer">App Store Editors</footer>
+                        </blockquote>
+                    </div>
+                    <div class="col-md-4">
+                        <blockquote class="blockquote">
+                            <p>"Before Habitify, I struggled with managing my time effectively and often felt overwhelmed. But the app has helped me create a well-structured routine and stick to it. I've improved my productivity, and I feel more balanced and in control. It's made a big difference in both my professional and personal life"</p>
+                            <footer class="blockquote-footer">Jennifer Ellison, Product Manager</footer>
+                        </blockquote>
+                    </div>
+                    <div class="col-md-4">
+                        <blockquote class="blockquote">
+                            <p>"Habitify is a game-changer for me. I've been able to set fitness goals and maintain consistency, all while tracking my progress. The app not only tracks my habits but also motivates me to keep going. Now, I've achieved my fitness goals faster than I ever thought possible."</p>
+                            <footer class="blockquote-footer">Thomas Maxwell, Fitness Enthusiast</footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="call-to-action-section py-5">
+            <div class="container text-center">
+                <h2>Why Wait to Transform Your Life?</h2>
+                <p>Join over 2 million people who are taking control of their habits and building a better life with Habitify. Whether your aim is to enhance productivity, improve fitness, or simply form healthier daily habits, Habitify has everything you need to make it happen.</p>
+                <a href="#" class="btn btn-primary btn-lg" id="get-started-link">Try Habitify Free</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Section -->
+    <div id="login-section" style="display: none;">
+        <div class="container login-register-section">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Login to HabitNest</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+                                {{ login_form.hidden_tag() }}
+                                <div class="form-group">
+                                    <label for="username">Email</label>
+                                    {{ login_form.email(class_="form-control", id="login-username", placeholder="Enter your email") }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    {{ login_form.password(class_="form-control", id="login-password", placeholder="Enter your password") }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                                <div class="mt-3">
+                                    <p>Don't have an account? <a href="#" id="register-link">Register Now</a></p>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="#" class="text-muted">Forgot Password?</a>
+                                </div>
+                            </form>
+                            <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+                                {{ register_form.hidden_tag() }}
+                                <div class="form-group">
+                                    <label for="register-email">Email</label>
+                                    {{ register_form.email(class_="form-control", id="register-email", placeholder="Enter your email") }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-username">Username</label>
+                                    {{ register_form.username(class_="form-control", id="register-username", placeholder="Enter your username") }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="register-password">Password</label>
+                                    {{ register_form.password(class_="form-control", id="register-password", placeholder="Choose a password") }}
+                                </div>
+                                <button type="submit" class="btn btn-primary">Register</button>
+                                <div class="mt-3">
+                                    <p>Already have an account? <a href="#" id="back-to-login-link">Back to Login</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>About HabitNest</h4>
+                    <p>HabitNest is a habit tracking and community platform designed to help you achieve your goals and lead a better life.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" id="footer-home-link">Home</a></li>
+                        <li><a href="#">Habits</a></li>
+                        <li><a href="#">Challenges</a></li>
+                        <li><a href="#">Community</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4>Contact Us</h4>
+                    <p>Email: info@habitnest.com<br>
+                    Phone: (123) 456-7890<br>
+                    Address: 35 Stirling Hwy, Crawley WA 6009</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 HabitNest. All rights reserved.</p>
+                </div>
+                <div class="col-md-6">
+                    <ul class="footer-social">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='HabitNest.js') }}"></script>
+</body>
+</html>

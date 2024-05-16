@@ -4,12 +4,13 @@ from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from config import Config
 from flask_login import LoginManager
+from flask_wtf import CSRFProtect
 import os
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
+csrf = CSRFProtect(app)
 # Import models and create tables
 from app import models
 with app.app_context():
