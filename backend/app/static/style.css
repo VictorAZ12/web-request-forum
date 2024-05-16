@@ -145,7 +145,7 @@ body {
 
 .save-btn,
 .cancel-btn,
-#delete-btn {
+.delete-btn {
     padding: 10px 20px;
     margin-right: 10px;
     border: none;
@@ -163,15 +163,15 @@ body {
     color: white;
 }
 
-#delete-btn {
+.delete-btn {
     background-color: #dc3545;
     color: white;
-    display: none;
+    /*display: none;*/
 }
 
 .save-btn:hover,
 .cancel-btn:hover,
-#delete-btn:hover {
+.delete-btn:hover {
     opacity: 0.8;
 }
 
@@ -258,14 +258,14 @@ form button.cancel-btn {
     color: white;
 }
 
-form button#delete-btn {
+form button.delete-btn {
     background-color: #dc3545;
     color: white;
-    display: none;
+    /*display: none;*/
 }
 
 form button.save-btn:hover,
 form button.cancel-btn:hover,
-form button#delete-btn:hover {
+form button.delete-btn:hover {
     opacity: 0.8;
 }
