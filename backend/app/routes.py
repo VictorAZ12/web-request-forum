@@ -1,8 +1,8 @@
 from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
-from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow, Comment, Tip
+from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow, Comment, Tip, UserChallenge
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
+from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm, ChallengeToHabitForm
 from datetime import datetime
 # Pages
 @app.route('/')
@@ -124,6 +124,39 @@ def add_habit():
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
+
+@app.route('/api/add_challenge_habit', methods=['POST'])
+@login_required
+def add_challenge_habit():
+    '''Add a challenge as a habit'''
+    form = ChallengeToHabitForm()
+    if form.validate_on_submit():
+        challenge = Challenge.query.filter_by(id=form.challenge_id.data).first()
+        if not challenge:
+            return "Invalid challenge"
+        habit = Habit.query.filter_by(id=challenge.base_habit).first()
+        if not habit:
+            db.session.delete(challenge)
+            db.session.commit()
+            return "Habit does not exist, challenge removed"
+        new_habit = Habit(user_id=current_user.get_id(),
+                          habit_name = habit.habit_name,
+                      start_date = form.start_date.data,
+                      habit_goal = habit.habit_goal,
+                      habit_unit = habit.habit_unit,
+                      habit_frequency = habit.habit_frequency,
+                      habit_type = habit.public,
+                      public = habit.start_date
+                      )
+        db.session.add(new_habit)
+        db.session.commit()
+        user_challenge = UserChallenge(
+            user_id = current_user.get_id(),
+            challenge_id = challenge.id,
+            habit_id = new_habit.id
+        )
+        return redirect(url_for("dashboard"))
+        
 
 @app.route('/api/challenges', methods=['GET'])
 @login_required

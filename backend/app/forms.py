@@ -15,7 +15,7 @@ class RegisterForm(FlaskForm):
 
 class HabitForm(FlaskForm):
     habit_name = StringField('Habit name', validators=[DataRequired()])
-    start_date = DateField('Target date', validators=[DataRequired()])
+    start_date = DateField('Start date', validators=[DataRequired()])
     habit_goal = IntegerField('Goal numbers', validators=[DataRequired()])
     habit_unit = StringField('Unit', validators=[DataRequired()])
     habit_frequency = IntegerField('Frequency', validators=[DataRequired(), NumberRange(1,3)])
@@ -28,6 +28,11 @@ class ChallengeForm(FlaskForm):
     content = StringField('Content')
     base_habit = IntegerField('Base_habit', validators=[DataRequired()])
     submit = SubmitField('Create challenge')
+
+class ChallengeToHabitForm(FlaskForm):
+    challenge_id = IntegerField('Challenge', validators=[DataRequired()])
+    start_date = DateField('Start date', validators=[DataRequired()])
+    submit = SubmitField('Enrol in challenge')
 
 class CommentForm(FlaskForm):
     content = StringField('Content')
