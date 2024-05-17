@@ -2,7 +2,7 @@ from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
 from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, FollowForm
+from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
 from datetime import datetime
 # Pages
 @app.route('/')
@@ -152,7 +152,7 @@ def add_challenge():
 @app.route('/api/follow/<int:user_id>', methods=['POST'])
 @login_required
 def follow_user(user_id):
-    form = FollowForm()
+    form = CSRFForm()
     if form.validate_on_submit():
         user_to_follow = User.query.filter_by(uid=user_id).first()
         if user_to_follow:
