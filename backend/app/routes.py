@@ -1,6 +1,6 @@
 from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
-from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow
+from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow, Comment, Tip
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
 from datetime import datetime
@@ -201,3 +201,32 @@ def get_user_challenges():
 
     user_challenges = [uc.challenge_id for uc in UserChallenge.query.filter_by(user_id=uid).all()]
     return jsonify(user_challenges)
+
+@app.route('/api/comments', methods=['GET'])
+@login_required
+def get_comments():
+    ''' Return all comments available for current user'''
+    comments = Comment.query.filter_by(receiver_id=current_user.get_id())
+    result = []
+    for comment in comments:
+        result.append({
+            'sender_id': comment.sender_id,
+            'sender_username': User.query.filter_by(uid=comment.sender_id).first().username,
+            'content': comment.content,
+            'public': comment.public
+        })
+    return jsonify(result)
+
+@app.route('/api/tips', methods=['GET'])
+def get_tips():
+    ''' Return all tips shared on the website'''
+    tips = Tip.query.all()
+    result = []
+    for tip in tips:
+        result.append({
+            'user_id': tip.user_id,
+            'user_name': User.query.filter_by(uid=tip.user_id).first().username,
+            'content': tip.content,
+            'public': tip.public
+        })
+    return jsonify(result)
