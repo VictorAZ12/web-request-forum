@@ -24,7 +24,8 @@ flask run
 ```
 Currently, following pages and functionalities are available:
 * `/index`: current index page, available for everyone. In Login tab, you can register and login.
-* `/protected`: a protected page, only authenticated users can access. You will be redirected to this page after you logged in successfully. Will be replaced with the user dashboard in the future.
+* `/dashboard`: user dashboard, a user will be redirected to here after login.
+* `/protected`: a protected page, only authenticated users can access.
 * `/`: a protected page, only authenticated users can access. No functionalities at the moment.
 * `/logout`: log out current user.
 
