@@ -34,6 +34,8 @@ def register():
         db.session.commit()
         login_user(user) # login user
         return jsonify({'status':'success', 'message':'account registered successfully.'}), 201
+    else:
+        return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
 
 @app.route('/login', methods=['POST'])
@@ -47,9 +49,11 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.hashed_password, password):
             login_user(user)
-            return redirect(url_for('dashboard'))
+            return jsonify({'status':'success', 'message':'logged in successfully'}), 200
         else:
-            return 'Login Unsuccessful. Please check email and password'
+            return jsonify({'status':'error', 'message': 'login unsuccessful, please check email and password'}), 401
+    else:
+        return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
 
 
