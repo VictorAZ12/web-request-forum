@@ -92,12 +92,7 @@ def get_habits():
     user_habits = Habit.query.filter_by(user_id=user_id).all()
     result = []
     for habit in user_habits:
-        result.append({
-            "user_id": habit.user_id,
-            "habit_name": habit.habit_name,
-            "description": habit.description,
-            "target_date": habit.target_date,
-        })
+        result.append(habit.to_dict())
     return jsonify(result)
 
 @app.route('/api/add_habit', methods=['POST'])
@@ -105,13 +100,15 @@ def get_habits():
 def add_habit():
     habit_form = HabitForm()
     if habit_form.validate_on_submit():
-        habit_name = habit_form.habit_name.data
-        description = habit_form.description.data
-        target_date = habit_form.target_date.data
         habit = Habit(user_id=current_user.get_id(),
-                      habit_name=habit_name,
-                      description=description,
-                      target_date=target_date)
+                      habit_name = habit_form.habit_name.data,
+                      start_date = habit_form.start_date.data,
+                      habit_goal = habit_form.habit_goal.data,
+                      habit_unit = habit_form.habit_unit.data,
+                      habit_frequency = habit_form.habit_frequency.data,
+                      habit_type = habit_form.public.data,
+                      public = habit_form.start_date.data
+                      )
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
@@ -119,24 +116,11 @@ def add_habit():
 @app.route('/api/challenges', methods=['GET'])
 @login_required
 def get_challenges():
-    """Retrieve all challenges: public and user's private ones"""
-    user_id = current_user.get_id()
-    created_challenges = Challenge.query.filter_by(creator_id=user_id).all()
-    public_challenges = Challenge.query.filter_by(public=True).all()
-    user_challenges = created_challenges + public_challenges
+    """Retrieve all challenges"""
+    challenges = Challenge.query.all()
     result = []
-    existing_challenges = []
-    for challenge in user_challenges:
-        if challenge.id not in existing_challenges:
-            result.append({
-                "id": challenge.id,
-                "name": challenge.name,
-                "content": challenge.content,
-                "public": challenge.public,
-                "modifiable": str(challenge.creator_id) == str(user_id)
-            })
-            existing_challenges.append(challenge.id)
-
+    for challenge in challenges:
+        result.append(challenge.to_dic())
     return jsonify(result)
 
 @app.route('/api/add_challenge', methods=['POST'])
@@ -144,13 +128,11 @@ def get_challenges():
 def add_challenge():
     challenge_form = ChallengeForm()
     if challenge_form.validate_on_submit():
-        challenge_name = challenge_form.challenge_name.data
-        content = challenge_form.content.data
-        public = challenge_form.public.data
-        challenge = Challenge(creator_id=current_user.get_id(),
-                          name=challenge_name,
-                          content=content,
-                          public=public)
+
+        challenge = Challenge(challenge_name = challenge_form.challenge_name.data,
+                              description = challenge_form.description.data,
+                              creator=current_user.get_id(),
+                              base_habit = challenge_form.base_habit.data)
         db.session.add(challenge)
         db.session.commit()
         return redirect(url_for("dashboard"))

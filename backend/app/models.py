@@ -75,6 +75,18 @@ class Habit(db.Model):
     habit_frequency = db.Column(db.Integer, nullable=False) # 1 for per day, 2 for per week, 3 for per month
     habit_type = db.Column(db.Integer, db.ForeignKey('habit_type.id'))
     public = db.Column(db.Boolean, default=True)
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'habit_name': self.habit_name,
+            'start_date': self.start_date.strftime('%Y-%m-%d %H:%M:%S') if isinstance(self.start_date, datetime) else self.start_date,
+            'habit_goal': self.habit_goal,
+            'habit_unit': self.habit_unit,
+            'habit_frequency': self.habit_frequency,
+            'habit_type': self.habit_type,
+            'public': self.public
+        }
 
 
 class HabitRecord(db.Model):
@@ -89,6 +101,14 @@ class Challenge(db.Model):
     description = db.Column(db.Text)
     creator = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
     base_habit = db.Column(db.Integer, db.ForeignKey('habit.id'), nullable=False)
+    def to_dic(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'description': self.description,
+            'creator': self.user_id,
+            'base_habit': self.base_habit
+        }
 
 class UserChallenge(db.Model):
     __tablename__ = 'user_challenge'
