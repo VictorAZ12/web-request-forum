@@ -38,7 +38,7 @@ def register():
         user = User(email=email, username=username, hashed_password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        return('Your account has been created! You can now log in', 'success')
+        return(redirect(url_for))
 
 
 @app.route('/login', methods=['POST'])
@@ -149,21 +149,33 @@ def add_challenge():
         db.session.commit()
         return redirect(url_for("dashboard"))
 
-@app.route('/api/follow/<int:user_id>', methods=['POST'])
+@app.route('/api/follow/<int:user_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
-def follow_user(user_id):
+def follow_unfollow_user(user_id):
     form = CSRFForm()
     if form.validate_on_submit():
         user_to_follow = User.query.filter_by(uid=user_id).first()
-        if user_to_follow:
+        if not user_to_follow:
+            return "Error: user does not exist"
+        
+        if request.method == 'GET':
+            return True if Follow.query.filter_by(follower_id=current_user.get_id(),
+                                                  followed_id=user_to_follow.get_id()).first() else False
+
+        if request.method == "POST":
             follow = Follow(follower_id=current_user.get_id(),
                             followed_id=user_to_follow.get_id(),
                             create_date=datetime.now())
             db.session.add(follow)
             db.session.commit()
             return redirect(url_for("dashboard"))
-        else:
-            return "Error: user does not exist"
+        if request.method == "DELETE":
+            follow = Follow.query.filter_by(follower_id=current_user.get_id(),
+                                   followed_id=user_to_follow.get_id()).first()
+            if follow:
+                db.session.delete(follow)
+                db.session.commit()
+            return "Success"
     else:
         return "Error: CSRF token not validated"
 
