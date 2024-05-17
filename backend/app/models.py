@@ -85,7 +85,8 @@ class HabitRecord(db.Model):
 
 class Challenge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.Text)    
+    challenge_name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
     creator = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
     base_habit = db.Column(db.Integer, db.ForeignKey('habit.id'), nullable=False)
 
