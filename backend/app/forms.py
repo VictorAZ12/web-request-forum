@@ -20,7 +20,7 @@ class HabitForm(FlaskForm):
     habit_unit = StringField('Unit', validators=[DataRequired()])
     habit_frequency = IntegerField('Frequency', validators=[DataRequired(), NumberRange(1,3)])
     habit_type = IntegerField('Habit', validators=[DataRequired()])
-    public = BooleanField('Publicly Visible', validators=[DataRequired])
+    public = BooleanField('Publicly Visible', validators=[DataRequired()])
     submit = SubmitField('Add habit')
 
 class ChallengeForm(FlaskForm):
@@ -28,3 +28,7 @@ class ChallengeForm(FlaskForm):
     content = StringField('Content')
     base_habit = IntegerField('Base_habit', validators=[DataRequired()])
     submit = SubmitField('Create challenge')
+
+class CSRFForm(FlaskForm):
+    """For CSRF protection only"""
+    pass

@@ -1,8 +1,9 @@
 from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
-from app.models import User, UserChallenge, Challenge, Habit, HabitType
+from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm
+from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
+from datetime import datetime
 # Pages
 @app.route('/')
 @login_required
@@ -147,6 +148,25 @@ def add_challenge():
         db.session.add(challenge)
         db.session.commit()
         return redirect(url_for("dashboard"))
+
+@app.route('/api/follow/<int:user_id>', methods=['POST'])
+@login_required
+def follow_user(user_id):
+    form = CSRFForm()
+    if form.validate_on_submit():
+        user_to_follow = User.query.filter_by(uid=user_id).first()
+        if user_to_follow:
+            follow = Follow(follower_id=current_user.get_id(),
+                            followed_id=user_to_follow.get_id(),
+                            create_date=datetime.now())
+            db.session.add(follow)
+            db.session.commit()
+            return redirect(url_for("dashboard"))
+        else:
+            return "Error: user does not exist"
+    else:
+        return "Error: CSRF token not validated"
+
 
 @app.route('/api/users', methods=['GET'])
 def get_users():
