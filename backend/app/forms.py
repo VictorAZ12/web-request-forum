@@ -28,3 +28,7 @@ class ChallengeForm(FlaskForm):
     content = StringField('Content')
     base_habit = IntegerField('Base_habit', validators=[DataRequired()])
     submit = SubmitField('Create challenge')
+
+class FollowForm(FlaskForm):
+    """For CSRF protection only"""
+    pass
