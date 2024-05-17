@@ -1,6 +1,6 @@
 from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
-from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow
+from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow, Comment, Tip
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
 from datetime import datetime
@@ -38,7 +38,7 @@ def register():
         user = User(email=email, username=username, hashed_password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        return('Your account has been created! You can now log in', 'success')
+        return(redirect(url_for))
 
 
 @app.route('/login', methods=['POST'])
@@ -149,21 +149,33 @@ def add_challenge():
         db.session.commit()
         return redirect(url_for("dashboard"))
 
-@app.route('/api/follow/<int:user_id>', methods=['POST'])
+@app.route('/api/follow/<int:user_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
-def follow_user(user_id):
+def follow_unfollow_user(user_id):
     form = CSRFForm()
     if form.validate_on_submit():
         user_to_follow = User.query.filter_by(uid=user_id).first()
-        if user_to_follow:
+        if not user_to_follow:
+            return "Error: user does not exist"
+        
+        if request.method == 'GET':
+            return True if Follow.query.filter_by(follower_id=current_user.get_id(),
+                                                  followed_id=user_to_follow.get_id()).first() else False
+
+        if request.method == "POST":
             follow = Follow(follower_id=current_user.get_id(),
                             followed_id=user_to_follow.get_id(),
                             create_date=datetime.now())
             db.session.add(follow)
             db.session.commit()
             return redirect(url_for("dashboard"))
-        else:
-            return "Error: user does not exist"
+        if request.method == "DELETE":
+            follow = Follow.query.filter_by(follower_id=current_user.get_id(),
+                                   followed_id=user_to_follow.get_id()).first()
+            if follow:
+                db.session.delete(follow)
+                db.session.commit()
+            return "Success"
     else:
         return "Error: CSRF token not validated"
 
@@ -189,3 +201,32 @@ def get_user_challenges():
 
     user_challenges = [uc.challenge_id for uc in UserChallenge.query.filter_by(user_id=uid).all()]
     return jsonify(user_challenges)
+
+@app.route('/api/comments', methods=['GET'])
+@login_required
+def get_comments():
+    ''' Return all comments available for current user'''
+    comments = Comment.query.filter_by(receiver_id=current_user.get_id())
+    result = []
+    for comment in comments:
+        result.append({
+            'sender_id': comment.sender_id,
+            'sender_username': User.query.filter_by(uid=comment.sender_id).first().username,
+            'content': comment.content,
+            'public': comment.public
+        })
+    return jsonify(result)
+
+@app.route('/api/tips', methods=['GET'])
+def get_tips():
+    ''' Return all tips shared on the website'''
+    tips = Tip.query.all()
+    result = []
+    for tip in tips:
+        result.append({
+            'user_id': tip.user_id,
+            'user_name': User.query.filter_by(uid=tip.user_id).first().username,
+            'content': tip.content,
+            'public': tip.public
+        })
+    return jsonify(result)
