@@ -51,7 +51,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.hashed_password, password):
             login_user(user)
-            return redirect(url_for('protected'))
+            return redirect(url_for('dashboard'))
         else:
             return 'Login Unsuccessful. Please check email and password'
 
@@ -71,6 +71,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/dashboard', methods=['GET'])
+@login_required
 def dashboard():
     habit_form = HabitForm()
     challenge_form = ChallengeForm()
