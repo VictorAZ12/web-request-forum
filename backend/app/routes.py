@@ -4,19 +4,13 @@ from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow,
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm, ChallengeToHabitForm
 from datetime import datetime
+import re
 # Pages
 @app.route('/')
 @login_required
 def home():
     """Returns homepage html"""
-    flash("Welcome to web app homepage!")
     return "Welcome to web app homepage!"
-
-# Test only login protected page
-@app.route('/protected')
-@login_required
-def protected():
-    return "You're logged in and can access this protected page"
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -26,19 +20,22 @@ def register():
         email = register_form.email.data
         username = register_form.username.data
         password = register_form.password.data
-        # check existence
+        # validate availability
         existing_email_user = User.query.filter_by(email=email).first()
         if existing_email_user:
-            return "Email exists!"
+            return jsonify({'status':'error', 'message':'Email already registered.'}), 400
         existing_username_user = User.query.filter_by(username=username).first()
         if existing_username_user:
-            return "Username exists!"
-
+            return jsonify({'status':'error', 'message':'username occupied.'}), 400
+        # create a new user
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
         user = User(email=email, username=username, hashed_password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        return(redirect(url_for))
+        login_user(user) # login user
+        return jsonify({'status':'success', 'message':'account registered successfully.'}), 201
+    else:
+        return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
 
 @app.route('/login', methods=['POST'])
@@ -52,9 +49,11 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.hashed_password, password):
             login_user(user)
-            return redirect(url_for('dashboard'))
+            return jsonify({'status':'success', 'message':'logged in successfully'}), 200
         else:
-            return 'Login Unsuccessful. Please check email and password'
+            return jsonify({'status':'error', 'message': 'login unsuccessful, please check email and password'}), 401
+    else:
+        return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
 
 
