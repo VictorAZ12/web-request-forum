@@ -1,6 +1,6 @@
 from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
-from app.models import User, UserChallenge, Challenge, Habit
+from app.models import User, UserChallenge, Challenge, Habit, HabitType
 from flask_login import login_user, current_user, logout_user, login_required
 from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm
 # Pages
@@ -84,6 +84,17 @@ def settings():
     return render_template('settings.html')
 
 # APIs
+@app.route('/api/habit_types', methods=['GET'])
+@login_required
+def get_habit_types():
+    """Retrieve all habit types"""
+    habit_types = HabitType.query.all()
+    result = []
+    for habit_type in habit_types:
+        result.append(habit_type.to_dic())
+    return jsonify(result)
+
+
 @app.route('/api/habits', methods=['GET'])
 @login_required
 def get_habits():

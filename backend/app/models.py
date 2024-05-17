@@ -64,6 +64,11 @@ class HabitType(db.Model):
     __tablename__ = 'habit_type'
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(100), nullable=False)
+    def to_dic(self):
+        return{
+            'id': self.id,
+            'type': self.type
+        }
 
 class Habit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
