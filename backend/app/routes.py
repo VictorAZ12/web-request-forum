@@ -155,6 +155,8 @@ def add_challenge_habit():
             challenge_id = challenge.id,
             habit_id = new_habit.id
         )
+        db.session.add(user_challenge)
+        db.session.commit()
         return redirect(url_for("dashboard"))
         
 
