@@ -206,8 +206,8 @@ def check_progress(habit_id):
     # calculate range
     date = datetime.now()
     if habit.habit_frequency == 1:
-        start_date = date
-        end_date = date
+        start_date = date.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_date = date.replace(hour=23, minute=59, second=59, microsecond=999999)
     elif habit.habit_frequency == 2:
         start_week = date - timedelta(days=date.weekday())
         start_date = start_week.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -220,6 +220,7 @@ def check_progress(habit_id):
     else:
         return None
     habit_records = HabitRecord.query.filter(
+        HabitRecord.habit == habit_id,
         HabitRecord.record_date >= start_date,
         HabitRecord.record_date <= end_date
         ).all()
