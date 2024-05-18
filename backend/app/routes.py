@@ -231,7 +231,7 @@ def check_progress(habit_id):
     return {
         "completed": completed,
         "habit_goal": habit.habit_goal,
-        "status": "Completed" if completed > habit.habit_goal else "Incomplete"
+        "status": "Completed" if completed >= habit.habit_goal else "Incomplete"
     }
 
 @app.route('/api/add_habit', methods=['POST'])
