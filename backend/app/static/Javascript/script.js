@@ -19,7 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function setMinDate(elementId) {
-    var today = new Date().toISOString().split('T')[0];
+    const date = new Date()
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const day = String(date.getDate()).padStart(2, '0'); 
+    const today = year + '-' + month + '-' + day;
     document.getElementById(elementId).setAttribute('min', today);
 }
 
@@ -111,12 +115,7 @@ function updateHabitInDOM(habit) {
     habitDiv.querySelector('.habit-progress').textContent = `0 / ${habit.habit_goal} ${habit.habit_unit}`;
 }
 
-// Additional functions and event listeners
 
-function setMinDate(elementId) {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById(elementId).setAttribute('min', today);
-}
 
 function showHabitModal() {
     document.getElementById('habitModal').style.display = 'block';
