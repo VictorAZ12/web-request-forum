@@ -254,9 +254,9 @@ def add_habit():
     
 
 
-@app.route('/api/add_challenge_habit', methods=['POST'])
+@app.route('/api/add_challenge_habit/<int:challenge_id>', methods=['POST'])
 @login_required
-def add_challenge_habit():
+def add_challenge_habit(challenge_id):
     '''Add a challenge as a habit'''
     habit_form = HabitForm()
     if request.method == 'POST':
@@ -270,6 +270,13 @@ def add_challenge_habit():
                         habit_type = habit_form.habitType.data,
                         )
             db.session.add(habit)
+            db.session.commit()
+            user_challenge = UserChallenge(
+                user_id=current_user.get_id(),
+                challenge_id = challenge_id,
+                habit_id = habit.id
+            )
+            db.session.add(user_challenge)
             db.session.commit()
             return jsonify(habit.to_dict()), 201
         else:
