@@ -568,3 +568,73 @@ section {
     font-size: 1rem;
     color: #666;
 }
+
+.success-stories-section {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+}
+
+.success-stories-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.success-stories-section p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #666;
+}
+
+.success-stories-wrapper {
+    background-color: #e0f7fa; /* 大框背景颜色 */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.success-stories-section .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.success-stories-section .col-md-4 {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: left;
+    flex: 1 1 calc(33.333% - 40px); /* 每个小框占据三分之一的宽度，减去间距 */
+    min-width: 300px; /* 设置最小宽度 */
+    box-sizing: border-box; /* 包括内边距和边框在内的宽度计算方式 */
+}
+
+.success-stories-section .blockquote {
+    font-size: 1rem;
+    color: #666;
+}
+
+.success-stories-section .blockquote-footer {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #999;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    flex: 1;
+}
