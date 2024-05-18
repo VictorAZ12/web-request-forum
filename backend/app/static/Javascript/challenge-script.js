@@ -97,7 +97,8 @@ function addChallenge() {
     })
     .then(response => response.json())
     .then(data => {
-        //addChallengeToDOM(data.name, data.habit, data.goal, data.unit, data.startDate, data.cid);
+        addChallengeToDOM(data.id, data.challenge_name, data.description, data.creator_id, data.challenge_goal, 
+            data.challenge_unit, data.challenge_frequency, data.challenge_type);
     })
     .catch(error => console.error('Error adding challenge:', error));
 }
