@@ -103,7 +103,6 @@ function addHabitToDOM(habit) {
             </div>
             <div class="habit-actions hidden">
                 <button class="check-in-btn">Check-In</button>
-                <button class="fail-btn">Fail</button>
                 <button class="edit-btn">Edit</button>
                 <button class="view-progress-btn">View Progress</button>
             </div>

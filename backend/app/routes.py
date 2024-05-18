@@ -281,7 +281,9 @@ def add_challenge_habit(challenge_id):
             )
             db.session.add(user_challenge)
             db.session.commit()
-            return jsonify(habit.to_dict()), 201
+            habit_dic = habit.to_dict()
+            habit_dic["is_challenge"] = True
+            return jsonify(habit_dic), 201
         else:
             return jsonify({'status':'error', 'message':'form data invalid'}), 400
         
