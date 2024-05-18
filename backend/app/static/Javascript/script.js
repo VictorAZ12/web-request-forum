@@ -76,7 +76,7 @@ function addHabitToDOM(habit) {
     habitDiv.innerHTML = `
         <div class="habit-details">
             <div class="habit-name">${habit.habit_name}</div>
-            <div class="habit-progress">0 / ${habit.habit_goal} ${habit.habit_unit}</div>
+            <div class="habit-progress">Loading...</div>
             <span class="habit-toggle">&#x22EE;</span>
         </div>
         <div class="habit-actions hidden">
@@ -88,6 +88,20 @@ function addHabitToDOM(habit) {
     `;
     setupHabitButtons(habitDiv);
     container.appendChild(habitDiv);
+
+    // Fetch and update progress data within the same function
+    const habitId = habit.id;
+    fetch(`/api/habits/progress/${habitId}`)
+    .then(response => response.json())
+    .then(data => {
+        const progressDiv = habitDiv.querySelector('.habit-progress');
+        progressDiv.textContent = `${data.completed} / ${habit.habit_goal} ${habit.habit_unit}`;
+    })
+    .catch(error => {
+        console.error('Error viewing habit progress:', error);
+        const progressDiv = habitDiv.querySelector('.habit-progress');
+        progressDiv.textContent = `Error loading progress`;
+    });
 }
 
 // Update a habit in the DOM

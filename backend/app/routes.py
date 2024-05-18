@@ -155,7 +155,7 @@ def check_in(habit_id):
         if habit is None:
             return jsonify({'status':'error', 'message':'Habit not found'}), 404
         user_id = current_user.get_id()
-        if str(habit.id) != str(user_id):
+        if str(habit.user_id) != str(user_id):
             return jsonify({'status':'error', 'message':'Not your habit'}), 404
         record_date = datetime.now()
         habit_record = HabitRecord(record_date=record_date,
