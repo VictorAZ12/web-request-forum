@@ -4,9 +4,11 @@ var confirmModal = document.getElementById('confirmModal');
 var joinedUsers = {};
 
 document.addEventListener('DOMContentLoaded', function() {
-    loadChallenges();
-    setMinDateForChallenge();
-    loadBaseHabits();
+    console.log("Loaded")
+    // loadChallenges();
+    // setMinDateForChallenge();
+    loadChallengeTypes();
+    
 });
 
 function getCSRFToken() {
@@ -327,7 +329,23 @@ function resetChallengeForm() {
     document.getElementById('delete-challenge-btn').classList.add('hidden'); // Hide delete button after closing
 }
 
-// Initial setup
-document.addEventListener('DOMContentLoaded', function() {
-    setMinDateForChallenge(); // Ensure the min date is set when the page loads
-});
+// Initial setup (obsolete)
+// document.addEventListener('DOMContentLoaded', function() {
+//     setMinDateForChallenge(); // Ensure the min date is set when the page loads
+// });
+
+// load challenge types
+function loadChallengeTypes() {
+    fetch('/api/habit_types')
+        .then(response => response.json())
+        .then(data => {
+            const challengeTypeSelect = document.getElementById('challengeType');
+            data.forEach(habitType => {
+                const option = document.createElement('option');
+                option.value = habitType.id;
+                option.textContent = habitType.type;
+                challengeTypeSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error loading challenge types:', error));
+}
