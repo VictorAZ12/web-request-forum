@@ -133,7 +133,7 @@ function addChallengeToDOM(challengeName, habitName, challengeGoal, challengeUni
             <div class="challenge-goal">${challengeGoal} ${challengeUnit}</div>
             <div class="challenge-start-date">Starts: ${challengeStartDate}</div>
             <div class="challenge-habit">Habit: ${habitName}</div>
-            <span class="challenge-toggle">â®Ÿ</span>
+            <span class="challenge-toggle">â®?</span>
         </div>
         <div class="challenge-actions hidden">
             <button class="join-btn" onclick="confirmJoinChallenge(${challengeId})">Join</button>
@@ -290,34 +290,34 @@ function deleteChallenge() {
     .catch(error => console.error('Error deleting challenge:', error));
 }
 
-// Add a habit to the DOM (reuse function from habit management script)
-function addHabitToDOM(name, goal, unit, startDate, containerId) {
-    const container = document.getElementById(containerId);
-    const habitId = Date.now();  // Using current timestamp as unique ID
-    const habitDiv = document.createElement('div');
-    habitDiv.className = 'habit';
-    habitDiv.id = habitId;
-    habitDiv.dataset.goal = goal;
-    habitDiv.dataset.unit = unit;
-    habitDiv.dataset.startDate = startDate;
-    habitDiv.dataset.challengeId = containerId === 'habitsContainer' ? habitId : ''; // Set challengeId for habits added from challenges
-    habitDiv.innerHTML = `
-        <div class="habit-details">
-            <div class="habit-name">${name}</div>
-            <div class="habit-progress">0 / ${goal} ${unit}</div>
-            <span class="habit-toggle">â®Ÿ</span>
-        </div>
-        <div class="habit-actions hidden">
-            <button class="check-in-btn">Check-In</button>
-            <button class="fail-btn">Fail</button>
-            <button class="edit-btn" onclick="editHabit(this)">Edit</button>
-            <button class="view-progress-btn">View Progress</button>
-        </div>
-    `;
-    setupHabitButtons(habitDiv);
-    container.appendChild(habitDiv);
-    updateVisibility(containerId);
-}
+// // Add a habit to the DOM (reuse function from habit management script)
+// function addHabitToDOM(name, goal, unit, startDate, containerId) {
+//     const container = document.getElementById(containerId);
+//     const habitId = Date.now();  // Using current timestamp as unique ID
+//     const habitDiv = document.createElement('div');
+//     habitDiv.className = 'habit';
+//     habitDiv.id = habitId;
+//     habitDiv.dataset.goal = goal;
+//     habitDiv.dataset.unit = unit;
+//     habitDiv.dataset.startDate = startDate;
+//     habitDiv.dataset.challengeId = containerId === 'habitsContainer' ? habitId : ''; // Set challengeId for habits added from challenges
+//     habitDiv.innerHTML = `
+//         <div class="habit-details">
+//             <div class="habit-name">${name}</div>
+//             <div class="habit-progress">0 / ${goal} ${unit}</div>
+//             <span class="habit-toggle">â®?</span>
+//         </div>
+//         <div class="habit-actions hidden">
+//             <button class="check-in-btn">Check-In</button>
+//             <button class="fail-btn">Fail</button>
+//             <button class="edit-btn" onclick="editHabit(this)">Edit</button>
+//             <button class="view-progress-btn">View Progress</button>
+//         </div>
+//     `;
+//     setupHabitButtons(habitDiv);
+//     container.appendChild(habitDiv);
+//     updateVisibility(containerId);
+// }
 
 // Reset the challenge form
 function resetChallengeForm() {

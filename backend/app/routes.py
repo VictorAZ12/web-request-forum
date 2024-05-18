@@ -96,37 +96,65 @@ def get_habit_types():
     return jsonify(result)
 
 
-
-@app.route('/api/habits', methods=['GET'])
+@app.route('/api/habits', defaults={'habit_id': None}, methods=['GET'])
+@app.route('/api/habits/<int:habit_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
-def get_habits():
-    """Retrieve all habits of current user"""
+def get_habits(habit_id):
+    """Retrieve all habits of current user or a specific habit"""
     user_id = current_user.get_id()
-    user_habits = Habit.query.filter_by(user_id=user_id).all()
-    result = []
-    for habit in user_habits:
-        result.append(habit.to_dict())
-    return jsonify(result)
+    if request.method == 'GET':
+        if habit_id is None:
+            user_habits = Habit.query.filter_by(user_id=user_id).all()
+            result = []
+            for habit in user_habits:
+                result.append(habit.to_dict())
+            return jsonify(result), 200
+        else:
+            habit = Habit.query.filter_by(user_id=user_id, id=habit_id).first()
+            if habit:
+                return jsonify(habit.to_dict())
+            else:
+                return jsonify({'error': 'Habit not found'}), 404
+    if request.method == 'PUT':
+        habit_form = HabitForm()
+        habit = Habit.query.filter_by(id=habit_id, user_id=current_user.get_id()).first()
+        if habit:
+            habit.habit_name = habit_form.habitName.data
+            habit.start_date = habit_form.startDate.data
+            habit.habit_goal = habit_form.habitGoal.data
+            habit.habit_unit = habit_form.habitUnit.data
+            habit.habit_frequency = habit_form.habitFrequency.data
+            habit.habit_type = habit_form.habitType.data
+            db.session.commit()
+            return jsonify(habit.to_dict()), 201
+        else:
+            return jsonify({'error': 'Habit not found'}), 404
+    if request.method == 'DELETE':
+        habit = Habit.query.filter_by(id=habit_id, user_id=current_user.get_id()).first()
+        
 
-@app.route('/api/add_habit', methods=['POST', 'PUT'])
+@app.route('/api/add_habit', methods=['POST'])
 @login_required
 def add_habit():
+    '''add or update a habit'''
     habit_form = HabitForm()
-    if habit_form.validate_on_submit():
-        if request.method == 'POST':
+    if request.method == 'POST':
+        if habit_form.validate_on_submit():
             habit = Habit(user_id=current_user.get_id(),
-                        habit_name = habit_form.habit_name.data,
-                        start_date = habit_form.start_date.data,
-                        habit_goal = habit_form.habit_goal.data,
-                        habit_unit = habit_form.habit_unit.data,
-                        habit_frequency = habit_form.habit_frequency.data,
-                        habit_type = habit_form.public.data,
-                        public = habit_form.start_date.data
+                        habit_name = habit_form.habitName.data,
+                        start_date = habit_form.startDate.data,
+                        habit_goal = habit_form.habitGoal.data,
+                        habit_unit = habit_form.habitUnit.data,
+                        habit_frequency = habit_form.habitFrequency.data,
+                        habit_type = habit_form.habitType.data,
                         )
             db.session.add(habit)
             db.session.commit()
-            return redirect(url_for("dashboard"))
+            return jsonify(habit.to_dict()), 201
+        else:
+            return jsonify({'status':'error', 'message':'form data invalid'}), 400
     
+
 
 @app.route('/api/add_challenge_habit', methods=['POST'])
 @login_required

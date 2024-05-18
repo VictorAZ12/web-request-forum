@@ -53,34 +53,21 @@ function loadHabitTypes() {
 function saveHabit() {
     const form = document.getElementById('newHabitForm');
     const formData = new FormData(form);
-    const habitData = {
-        habit_type: formData.get('habitType'),
-        habit_name: formData.get('habitName'),
-        habit_goal: formData.get('habitGoal'),
-        habit_unit: formData.get('habitUnit'),
-        habit_frequency: formData.get('habitFrequency'),
-        start_date: formData.get('startDate')
-    };
-
     const isEdit = form.dataset.isEdit === 'true';
     const habitId = form.dataset.habitId;
-
     fetch(isEdit ? `/api/habits/${habitId}` : '/api/add_habit', {
         method: isEdit ? 'PUT' : 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()
-        },
-        body: JSON.stringify(habitData)
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
+        closeHabitModal();
         if (isEdit) {
             updateHabitInDOM(data);
         } else {
             addHabitToDOM(data);
         }
-        closeHabitModal();
+        
     })
     .catch(error => console.error('Error:', error));
 }
@@ -95,7 +82,7 @@ function addHabitToDOM(habit) {
         <div class="habit-details">
             <div class="habit-name">${habit.habit_name}</div>
             <div class="habit-progress">0 / ${habit.habit_goal} ${habit.habit_unit}</div>
-            <span class="habit-toggle">то?</span>
+            <span class="habit-toggle">&#x22EE;</span>
         </div>
         <div class="habit-actions hidden">
             <button class="check-in-btn">Check-In</button>

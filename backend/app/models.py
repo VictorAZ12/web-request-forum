@@ -85,7 +85,7 @@ class Habit(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'habit_name': self.habit_name,
-            'start_date': self.start_date.strftime('%Y-%m-%d %H:%M:%S') if isinstance(self.start_date, datetime) else self.start_date,
+            'start_date': self.start_date.strftime('%Y-%m-%d') if isinstance(self.start_date, datetime) else self.start_date,
             'habit_goal': self.habit_goal,
             'habit_unit': self.habit_unit,
             'habit_frequency': self.habit_frequency,
