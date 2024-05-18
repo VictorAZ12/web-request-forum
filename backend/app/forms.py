@@ -31,10 +31,6 @@ class ChallengeForm(FlaskForm):
     challengeType = IntegerField('Type', validators=[DataRequired()])
     submit = SubmitField('Create challenge')
 
-class ChallengeToHabitForm(FlaskForm):
-    challenge_id = IntegerField('Challenge', validators=[DataRequired()])
-    start_date = DateField('Start date', validators=[DataRequired()])
-    submit = SubmitField('Enrol in challenge')
 
 class CommentForm(FlaskForm):
     content = StringField('Content')

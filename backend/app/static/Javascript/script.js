@@ -50,6 +50,11 @@ function loadHabitTypes() {
 
 // Save a new habit or update an existing one
 function saveHabit() {
+    document.getElementById('habitType').disabled = false;
+    document.getElementById('habitName').disabled = false;
+    document.getElementById('habitGoal').disabled = false;
+    document.getElementById('habitUnit').disabled = false;
+    document.getElementById('habitFrequency').disabled = false;
     const form = document.getElementById('newHabitForm');
     const formData = new FormData(form);
     const isEdit = form.dataset.isEdit === 'true';

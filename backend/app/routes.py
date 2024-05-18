@@ -2,7 +2,7 @@ from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
 from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow, Comment, Tip, UserChallenge, HabitRecord
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm, ChallengeToHabitForm
+from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
 from datetime import datetime, timedelta
 import calendar
 # Pages
@@ -258,7 +258,7 @@ def add_habit():
 @login_required
 def add_challenge_habit():
     '''Add a challenge as a habit'''
-    form = ChallengeToHabitForm()
+    form = HabitForm()
     if form.validate_on_submit():
         challenge = Challenge.query.filter_by(id=form.challenge_id.data).first()
         if not challenge:

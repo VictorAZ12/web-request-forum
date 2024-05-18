@@ -66,18 +66,7 @@ function closeViewChallengeModal() {
     viewChallengeModal.style.display = "none";
 }
 
-// Show confirmation modal
-function showConfirmModal(message, onConfirm) {
-    document.getElementById('confirmMessage').textContent = message;
-    confirmModal.style.display = "block";
-    document.getElementById('confirmOkBtn').onclick = function() {
-        confirmModal.style.display = "none";
-        onConfirm();
-    };
-    document.getElementById('confirmCancelBtn').onclick = function() {
-        confirmModal.style.display = "none";
-    };
-}
+
 
 // Set the minimum date for the challenge start date input to today
 function setMinDateForChallenge() {
@@ -117,8 +106,9 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
     challengeFrequency, challenge_type
 ) {
     const challengeDiv = document.createElement('div');
+    const challengeDivId = "challenge" + String(id);
     challengeDiv.className = 'challenge';
-    challengeDiv.id = id;
+    challengeDiv.id = challengeDivId;
     challengeDiv.dataset.name = challengeName;
     challengeDiv.dataset.description = description;
     challengeDiv.dataset.creator_id = creator_id;
@@ -134,10 +124,7 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
         </div>
         <div class="challenge-actions hidden">
             <div class="challengeGoal">${challengeGoal} ${challengeUnit} ${frequencyText} </div>
-            <button class="join-btn" onclick="confirmJoinChallenge(${id})">Join</button>
-            <button class="unjoin-btn hidden" onclick="confirmUnjoinChallenge(${id})">Unjoin</button>
-            <button class="edit-btn" onclick="editChallenge(this)">Edit</button>
-            <button class="view-btn" onclick="viewChallenge(${id})">View</button>
+            <button class="join-btn" onclick="joinChallenge('${challengeDivId}')">Join</button>
         </div>
     `;
 
@@ -151,12 +138,7 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
 
 }
 
-// Handle confirm join challenge
-function confirmJoinChallenge(challengeId) {
-    showConfirmModal("Are you sure you want to join this challenge?", function() {
-        joinChallenge(challengeId);
-    });
-}
+
 
 // Handle confirm unjoin challenge
 function confirmUnjoinChallenge(challengeId) {
@@ -167,20 +149,32 @@ function confirmUnjoinChallenge(challengeId) {
 
 // Handle join challenge
 function joinChallenge(challengeId) {
+    console.log(challengeId);
     const challengeDiv = document.getElementById(challengeId);
-    const challengeName = challengeDiv.dataset.name;
-    const habitName = challengeDiv.dataset.habit;
-    const challengeGoal = challengeDiv.dataset.goal;
-    const challengeUnit = challengeDiv.dataset.unit;
-    const challengeStartDate = challengeDiv.dataset.startDate;
+    
+    showHabitModal();
+    // Populate the form fields with the dataset values
+    document.getElementById('habitType').value = challengeDiv.dataset.type;
+    document.getElementById('habitName').value = challengeDiv.dataset.name;
+    document.getElementById('habitGoal').value = challengeDiv.dataset.goal;
+    document.getElementById('habitUnit').value = challengeDiv.dataset.unit;
+    document.getElementById('habitFrequency').value = challengeDiv.dataset.frequency;
 
+    // Disable the form fields to make them disabled
+    document.getElementById('habitType').disabled = true;
+    document.getElementById('habitName').disabled = true;
+    document.getElementById('habitGoal').disabled = true;
+    document.getElementById('habitUnit').disabled = true;
+    document.getElementById('habitFrequency').disabled = true;
+    // Enable the start date field
+    
     // Clone the challenge to the habits page
-    addHabitToDOM(challengeName, challengeGoal, challengeUnit, challengeStartDate, 'habitsContainer');
+    // addHabitToDOM(challengeName, challengeGoal, challengeUnit, challengeStartDate, 'habitsContainer');
 
-    challengeDiv.querySelector('.join-btn').classList.add('hidden');
-    challengeDiv.querySelector('.unjoin-btn').classList.remove('hidden');
-    joinedUsers[challengeId]++;
-    alert('Joined the challenge!');
+    // challengeDiv.querySelector('.join-btn').classList.add('hidden');
+    // challengeDiv.querySelector('.unjoin-btn').classList.remove('hidden');
+    // joinedUsers[challengeId]++;
+    // alert('Joined the challenge!');
 }
 
 // Handle unjoin challenge
