@@ -56,7 +56,8 @@ body {
     padding: 20px;
 }
 
-.add-habit-btn {
+.add-habit-btn,
+.add-challenge-btn {
     background-color: #007bff;
     color: white;
     border: none;
@@ -72,7 +73,8 @@ body {
     margin-bottom: 20px;
 }
 
-.habit {
+.habit,
+.challenge {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     padding: 10px;
@@ -80,13 +82,15 @@ body {
     border-radius: 5px;
 }
 
-.habit-details {
+.habit-details,
+.challenge-details {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.habit-actions.hidden {
+.habit-actions.hidden,
+.challenge-actions.hidden {
     display: none;
 }
 
@@ -166,7 +170,7 @@ body {
 .delete-btn {
     background-color: #dc3545;
     color: white;
-    /*display: none;*/
+    display: none;
 }
 
 .save-btn:hover,
@@ -175,97 +179,10 @@ body {
     opacity: 0.8;
 }
 
-/* Community Challenges */
-.challenge {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.challenge .challenge-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.challenge .challenge-name {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.challenge .challenge-goal, .challenge .challenge-start-date, .challenge .challenge-creator {
-    font-size: 14px;
-}
-
-.add-challenge-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.add-challenge-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Additional styling for profile and settings */
-.profile-info {
-    margin-bottom: 20px;
-}
-
-.profile-info p {
-    margin: 5px 0;
-}
-
-.profile-info button {
-    margin-top: 10px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-form label {
-    margin-bottom: 5px;
-}
-
-form input,
-form select,
-form button {
-    margin-bottom: 10px;
-}
-
-form button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-form button.save-btn {
-    background-color: #28a745;
-    color: white;
-}
-
-form button.cancel-btn {
-    background-color: #ffc107;
-    color: white;
-}
-
-form button.delete-btn {
-    background-color: #dc3545;
-    color: white;
-    /*display: none;*/
-}
-
-form button.save-btn:hover,
-form button.cancel-btn:hover,
-form button.delete-btn:hover {
-    opacity: 0.8;
+.profile h2 {
+    font-size: 18px;
+    margin: 10px 0 0;
+    word-wrap: break-word; /* Ensures text wraps within the container */
+    white-space: normal; /* Allows text to wrap */
+    overflow-wrap: break-word; /* Breaks long words to fit within the container */
 }

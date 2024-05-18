@@ -14,25 +14,23 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Register')
 
 class HabitForm(FlaskForm):
-    habit_name = StringField('Habit name', validators=[DataRequired()])
-    start_date = DateField('Start date', validators=[DataRequired()])
-    habit_goal = IntegerField('Goal numbers', validators=[DataRequired()])
-    habit_unit = StringField('Unit', validators=[DataRequired()])
-    habit_frequency = IntegerField('Frequency', validators=[DataRequired(), NumberRange(1,3)])
-    habit_type = IntegerField('Habit', validators=[DataRequired()])
-    public = BooleanField('Publicly Visible', validators=[DataRequired()])
+    habitName = StringField('Habit name', validators=[DataRequired()])
+    startDate = DateField('Start date', validators=[DataRequired()])
+    habitGoal = IntegerField('Goal numbers', validators=[DataRequired()])
+    habitUnit = StringField('Unit', validators=[DataRequired()])
+    habitFrequency = IntegerField('Frequency', validators=[DataRequired(), NumberRange(1,3)])
+    habitType = IntegerField('Habit', validators=[DataRequired()])
     submit = SubmitField('Add habit')
 
 class ChallengeForm(FlaskForm):
-    challenge_name = StringField('Challenge name', validators=[DataRequired()])
-    content = StringField('Content')
-    base_habit = IntegerField('Base_habit', validators=[DataRequired()])
+    challengeName = StringField('Challenge name', validators=[DataRequired()])
+    description = StringField('description')
+    challengeGoal = IntegerField('Goal numbers', validators=[DataRequired()])
+    challengeUnit = StringField('Unit', validators=[DataRequired()])
+    challengeFrequency = IntegerField('Frequency', validators=[DataRequired(), NumberRange(1,3)])
+    challengeType = IntegerField('Type', validators=[DataRequired()])
     submit = SubmitField('Create challenge')
 
-class ChallengeToHabitForm(FlaskForm):
-    challenge_id = IntegerField('Challenge', validators=[DataRequired()])
-    start_date = DateField('Start date', validators=[DataRequired()])
-    submit = SubmitField('Enrol in challenge')
 
 class CommentForm(FlaskForm):
     content = StringField('Content')

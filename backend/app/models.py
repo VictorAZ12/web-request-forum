@@ -85,7 +85,7 @@ class Habit(db.Model):
             'id': self.id,
             'user_id': self.user_id,
             'habit_name': self.habit_name,
-            'start_date': self.start_date.strftime('%Y-%m-%d %H:%M:%S') if isinstance(self.start_date, datetime) else self.start_date,
+            'start_date': self.start_date.strftime('%Y-%m-%d') if isinstance(self.start_date, datetime) else self.start_date,
             'habit_goal': self.habit_goal,
             'habit_unit': self.habit_unit,
             'habit_frequency': self.habit_frequency,
@@ -104,15 +104,21 @@ class Challenge(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     challenge_name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    creator = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
-    base_habit = db.Column(db.Integer, db.ForeignKey('habit.id'), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
+    challenge_goal = db.Column(db.Integer, nullable=False) 
+    challenge_unit = db.Column(db.String(100), nullable=False)
+    challenge_frequency = db.Column(db.Integer, nullable=False) # 1 for per day, 2 for per week, 3 for per month
+    challenge_type = db.Column(db.Integer, db.ForeignKey('habit_type.id'))
     def to_dic(self):
         return {
             'id': self.id,
-            'user_id': self.user_id,
+            'challenge_name': self.challenge_name,
             'description': self.description,
-            'creator': self.user_id,
-            'base_habit': self.base_habit
+            'creator_id': self.creator_id,
+            'challenge_goal': self.challenge_goal,
+            'challenge_unit': self.challenge_unit,
+            'challenge_frequency': self.challenge_frequency,
+            'challenge_type': self.challenge_type
         }
 
 class UserChallenge(db.Model):
