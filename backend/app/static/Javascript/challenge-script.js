@@ -151,15 +151,19 @@ function confirmUnjoinChallenge(challengeId) {
 function joinChallenge(challengeId) {
     console.log(challengeId);
     const challengeDiv = document.getElementById(challengeId);
+    // remove current listener
+    document.getElementById('newHabitForm').removeEventListener('submit', saveHabitHandler);
+    // add submit challenge habit listner
+    document.getElementById('newHabitForm').addEventListener('submit', saveChallengeHabitHandler);
     
-    showHabitModal();
+
     // Populate the form fields with the dataset values
     document.getElementById('habitType').value = challengeDiv.dataset.type;
     document.getElementById('habitName').value = challengeDiv.dataset.name;
     document.getElementById('habitGoal').value = challengeDiv.dataset.goal;
     document.getElementById('habitUnit').value = challengeDiv.dataset.unit;
     document.getElementById('habitFrequency').value = challengeDiv.dataset.frequency;
-
+    
     // Disable the form fields to make them disabled
     document.getElementById('habitType').disabled = true;
     document.getElementById('habitName').disabled = true;
@@ -167,7 +171,7 @@ function joinChallenge(challengeId) {
     document.getElementById('habitUnit').disabled = true;
     document.getElementById('habitFrequency').disabled = true;
     // Enable the start date field
-    
+    showHabitModal();
     // Clone the challenge to the habits page
     // addHabitToDOM(challengeName, challengeGoal, challengeUnit, challengeStartDate, 'habitsContainer');
 
@@ -176,7 +180,39 @@ function joinChallenge(challengeId) {
     // joinedUsers[challengeId]++;
     // alert('Joined the challenge!');
 }
-
+function saveChallengeHabit() {
+    // enable fields again
+    document.getElementById('habitType').disabled = false;
+    document.getElementById('habitName').disabled = false;
+    document.getElementById('habitGoal').disabled = false;
+    document.getElementById('habitUnit').disabled = false;
+    document.getElementById('habitFrequency').disabled = false;
+    const form = document.getElementById('newHabitForm');
+    const formData = new FormData(form);
+    const isEdit = form.dataset.isEdit === 'true';
+    fetch('/api/add_challenge_habit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        closeHabitModal();
+        if (isEdit) {
+            updateHabitInDOM(data);
+        } else {
+            addHabitToDOM(data);
+        }
+        
+    })
+    .catch(error => console.error('Error:', error));
+    document.getElementById('newHabitForm').removeEventListener('submit', saveChallengeHabitHandler);
+    // add submit challenge habit listner
+    document.getElementById('newHabitForm').addEventListener('submit', saveHabitHandler);
+}
+function saveChallengeHabitHandler(event) {
+    event.preventDefault();
+    saveChallengeHabit();
+}
 // Handle unjoin challenge
 function unjoinChallenge(challengeId) {
     // Remove the habit from the habits container

@@ -258,35 +258,22 @@ def add_habit():
 @login_required
 def add_challenge_habit():
     '''Add a challenge as a habit'''
-    form = HabitForm()
-    if form.validate_on_submit():
-        challenge = Challenge.query.filter_by(id=form.challenge_id.data).first()
-        if not challenge:
-            return "Invalid challenge"
-        habit = Habit.query.filter_by(id=challenge.base_habit).first()
-        if not habit:
-            db.session.delete(challenge)
+    habit_form = HabitForm()
+    if request.method == 'POST':
+        if habit_form.validate_on_submit():
+            habit = Habit(user_id=current_user.get_id(),
+                        habit_name = habit_form.habitName.data,
+                        start_date = habit_form.startDate.data,
+                        habit_goal = habit_form.habitGoal.data,
+                        habit_unit = habit_form.habitUnit.data,
+                        habit_frequency = habit_form.habitFrequency.data,
+                        habit_type = habit_form.habitType.data,
+                        )
+            db.session.add(habit)
             db.session.commit()
-            return "Habit does not exist, challenge removed"
-        new_habit = Habit(user_id=current_user.get_id(),
-                          habit_name = habit.habit_name,
-                      start_date = form.start_date.data,
-                      habit_goal = habit.habit_goal,
-                      habit_unit = habit.habit_unit,
-                      habit_frequency = habit.habit_frequency,
-                      habit_type = habit.public,
-                      public = habit.start_date
-                      )
-        db.session.add(new_habit)
-        db.session.commit()
-        user_challenge = UserChallenge(
-            user_id = current_user.get_id(),
-            challenge_id = challenge.id,
-            habit_id = new_habit.id
-        )
-        db.session.add(user_challenge)
-        db.session.commit()
-        return redirect(url_for("dashboard"))
+            return jsonify(habit.to_dict()), 201
+        else:
+            return jsonify({'status':'error', 'message':'form data invalid'}), 400
         
 
 @app.route('/api/challenges', methods=['GET'])
