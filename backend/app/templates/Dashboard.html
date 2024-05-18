@@ -24,8 +24,8 @@
         <div id="habitsContainer" class="habits-container"></div>
         <h2>Active Challenges</h2>
         <div id="activeChallenges" class="habits-container"></div>
-        <h2>Future Challenges</h2>
-        <div id="futureChallenges" class="habits-container"></div>
+        <h2>All Challenges</h2>
+        <div id="allChallenges" class="habits-container"></div>
     </div>
 
     <!-- Habit Modal -->
@@ -67,9 +67,21 @@
                 {{ challenge_form.csrf_token }}
                 <label for="challengeName">Challenge Name:</label>
                 <input type="text" id="challengeName" name="challengeName" required>
-                <label for="baseHabit">Base Habit:</label>
-                <select id="baseHabit" name="baseHabit" required>
-                    <option value="">Select a base habit</option>
+                <label for="description">description:</label>
+                <input type="text" id="description" name="description" required>
+                <label for="challengeType">Challenge Type:</label>
+                <select id="challengeType" name="challengeType" required>
+                    <option value="">Select a challenge type</option>
+                </select>
+                <label for="challengeGoal">Goal:</label>
+                <input type="number" id="challengeGoal" name="challengeGoal" required min="1">
+                <label for="challengeUnit">Unit:</label>
+                <input type="text" id="challengeUnit" name="challengeUnit" required>
+                <label for="challengeFrequency">Frequency:</label>
+                <select id="challengeFrequency" name="challengeFrequency" required>
+                    <option value="1">Per Day</option>
+                    <option value="2">Per Week</option>
+                    <option value="3">Per Month</option>
                 </select>
                 <button type="submit" class="save-btn">Save</button>
                 <button type="button" class="cancel-btn" onclick="closeChallengeModal()">Cancel</button>

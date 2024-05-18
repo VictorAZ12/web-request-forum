@@ -2,7 +2,7 @@ from flask import redirect, url_for, request, jsonify, flash, render_template
 from app import app, db, bcrypt
 from app.models import User, UserChallenge, Challenge, Habit, HabitType, Follow, Comment, Tip, UserChallenge, HabitRecord
 from flask_login import login_user, current_user, logout_user, login_required
-from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm, ChallengeToHabitForm
+from app.forms import LoginForm, RegisterForm, HabitForm, ChallengeForm, CSRFForm
 from datetime import datetime, timedelta
 import calendar
 # Pages
@@ -107,7 +107,10 @@ def get_habits(habit_id):
             user_habits = Habit.query.filter_by(user_id=user_id).all()
             result = []
             for habit in user_habits:
-                result.append(habit.to_dict())
+                user_challenge = UserChallenge.query.filter_by(habit_id = habit.id).first()
+                habit_dic = habit.to_dict()
+                habit_dic["is_challenge"] = False if user_challenge is None else True
+                result.append(habit_dic)
             return jsonify(result), 200
         else:
             habit = Habit.query.filter_by(user_id=user_id, id=habit_id).first()
@@ -254,39 +257,35 @@ def add_habit():
     
 
 
-@app.route('/api/add_challenge_habit', methods=['POST'])
+@app.route('/api/add_challenge_habit/<int:challenge_id>', methods=['POST'])
 @login_required
-def add_challenge_habit():
+def add_challenge_habit(challenge_id):
     '''Add a challenge as a habit'''
-    form = ChallengeToHabitForm()
-    if form.validate_on_submit():
-        challenge = Challenge.query.filter_by(id=form.challenge_id.data).first()
-        if not challenge:
-            return "Invalid challenge"
-        habit = Habit.query.filter_by(id=challenge.base_habit).first()
-        if not habit:
-            db.session.delete(challenge)
+    habit_form = HabitForm()
+    if request.method == 'POST':
+        if habit_form.validate_on_submit():
+            habit = Habit(user_id=current_user.get_id(),
+                        habit_name = habit_form.habitName.data,
+                        start_date = habit_form.startDate.data,
+                        habit_goal = habit_form.habitGoal.data,
+                        habit_unit = habit_form.habitUnit.data,
+                        habit_frequency = habit_form.habitFrequency.data,
+                        habit_type = habit_form.habitType.data,
+                        )
+            db.session.add(habit)
             db.session.commit()
-            return "Habit does not exist, challenge removed"
-        new_habit = Habit(user_id=current_user.get_id(),
-                          habit_name = habit.habit_name,
-                      start_date = form.start_date.data,
-                      habit_goal = habit.habit_goal,
-                      habit_unit = habit.habit_unit,
-                      habit_frequency = habit.habit_frequency,
-                      habit_type = habit.public,
-                      public = habit.start_date
-                      )
-        db.session.add(new_habit)
-        db.session.commit()
-        user_challenge = UserChallenge(
-            user_id = current_user.get_id(),
-            challenge_id = challenge.id,
-            habit_id = new_habit.id
-        )
-        db.session.add(user_challenge)
-        db.session.commit()
-        return redirect(url_for("dashboard"))
+            user_challenge = UserChallenge(
+                user_id=current_user.get_id(),
+                challenge_id = challenge_id,
+                habit_id = habit.id
+            )
+            db.session.add(user_challenge)
+            db.session.commit()
+            habit_dic = habit.to_dict()
+            habit_dic["is_challenge"] = True
+            return jsonify(habit_dic), 201
+        else:
+            return jsonify({'status':'error', 'message':'form data invalid'}), 400
         
 
 @app.route('/api/challenges', methods=['GET'])
@@ -304,14 +303,18 @@ def get_challenges():
 def add_challenge():
     challenge_form = ChallengeForm()
     if challenge_form.validate_on_submit():
-
-        challenge = Challenge(challenge_name = challenge_form.challenge_name.data,
+        challenge = Challenge(challenge_name = challenge_form.challengeName.data,
                               description = challenge_form.description.data,
-                              creator=current_user.get_id(),
-                              base_habit = challenge_form.base_habit.data)
+                              creator_id=current_user.get_id(),
+                              challenge_goal=challenge_form.challengeGoal.data,
+                              challenge_unit=challenge_form.challengeUnit.data,
+                              challenge_frequency=challenge_form.challengeFrequency.data,
+                              challenge_type=challenge_form.challengeType.data)
         db.session.add(challenge)
         db.session.commit()
-        return redirect(url_for("dashboard"))
+        return jsonify(challenge.to_dic()), 200
+    else:
+        return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
 @app.route('/api/follow/<int:user_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
