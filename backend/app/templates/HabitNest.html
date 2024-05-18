@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HabitNest - Home</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/HabitNest.css') }}">
+    <link rel="stylesheet" href="../static/CSS/HabitNest.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
@@ -20,15 +20,6 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="#" id="home-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Habits</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Challenges</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Community</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" id="login-link">Login</a>
@@ -136,17 +127,17 @@
                 <p>Unlock a world of possibilities with our comprehensive toolkit, designed to ensure your success in habit-building.</p>
                 <div class="row">
                     <div class="col-md-4">
-                        <img src="timer-icon.png" alt="Timer Icon" class="tool-icon">
+                        <i class="fas fa-hourglass-start fa-3x tool-icon" style="color: #1E90FF;"></i>
                         <h3>Built-in Timer</h3>
                         <p>Our intuitive built-in timer helps you stay focused, improving your productivity and saving you valuable time.</p>
                     </div>
                     <div class="col-md-4">
-                        <img src="notes-icon.png" alt="Notes Icon" class="tool-icon">
+                        <i class="fas fa-sticky-note fa-3x tool-icon" style="color: #8A2BE2;"></i>
                         <h3>Built-in Notes</h3>
                         <p>Capture and reflect on your thoughts, fostering self-awareness and enabling continuous growth.</p>
                     </div>
                     <div class="col-md-4">
-                        <img src="mood-icon.png" alt="Mood Icon" class="tool-icon">
+                        <i class="fas fa-smile fa-3x tool-icon" style="color: #FF4500;"></i>
                         <h3>Mood Tracking</h3>
                         <p>Track your emotional health, understand its effects on your habits, and create a holistic approach to self-improvement.</p>
                     </div>
@@ -274,9 +265,6 @@
                     <h4>Quick Links</h4>
                     <ul class="footer-links">
                         <li><a href="#" id="footer-home-link">Home</a></li>
-                        <li><a href="#">Habits</a></li>
-                        <li><a href="#">Challenges</a></li>
-                        <li><a href="#">Community</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
@@ -305,6 +293,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='Javascript/HabitNest.js') }}"></script>
+    <script src="../static/Javascript/HabitNest.js"></script>
 </body>
 </html>
