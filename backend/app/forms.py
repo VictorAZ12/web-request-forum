@@ -24,8 +24,11 @@ class HabitForm(FlaskForm):
 
 class ChallengeForm(FlaskForm):
     challenge_name = StringField('Challenge name', validators=[DataRequired()])
-    content = StringField('Content')
-    base_habit = IntegerField('Base_habit', validators=[DataRequired()])
+    description = StringField('description')
+    challengeGoal = IntegerField('Goal numbers', validators=[DataRequired()])
+    challengeUnit = StringField('Unit', validators=[DataRequired()])
+    challengeFrequency = IntegerField('Frequency', validators=[DataRequired(), NumberRange(1,3)])
+    challengeType = IntegerField('Type', validators=[DataRequired()])
     submit = SubmitField('Create challenge')
 
 class ChallengeToHabitForm(FlaskForm):

@@ -304,14 +304,18 @@ def get_challenges():
 def add_challenge():
     challenge_form = ChallengeForm()
     if challenge_form.validate_on_submit():
-
         challenge = Challenge(challenge_name = challenge_form.challenge_name.data,
                               description = challenge_form.description.data,
-                              creator=current_user.get_id(),
-                              base_habit = challenge_form.base_habit.data)
+                              creator_id=current_user.get_id(),
+                              challenge_goal=challenge_form.challengeGoal.data,
+                              challenge_unit=challenge_form.challengeUnit,
+                              challenge_frequency=challenge_form.challengeFrequency,
+                              challenge_type=challenge_form.challengeType)
         db.session.add(challenge)
         db.session.commit()
-        return redirect(url_for("dashboard"))
+        return jsonify({"status": "success", "message": "challenge created"}), 200
+    else:
+        return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
 @app.route('/api/follow/<int:user_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
