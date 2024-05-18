@@ -180,7 +180,6 @@ section {
 /* Enhanced Style for Section Headings */
 .features-section h2,
 .progress-section h2,
-.challenges-section h2,
 .tools-section h2,
 .success-stories-section h2,
 .call-to-action-section h2 {
@@ -195,7 +194,6 @@ section {
 
 .features-section h2::before,
 .progress-section h2::before,
-.challenges-section h2::before,
 .tools-section h2::before,
 .success-stories-section h2::before,
 .call-to-action-section h2::before {
@@ -238,36 +236,6 @@ section {
 }
 
 .progress-section .col-md-4 p {
-    font-size: 20px;
-    color: #555;
-}
-
-.challenges-section {
-    background-color: #f8f9fa;
-    padding: 100px 0;
-}
-
-.challenges-section h2 {
-    font-size: 42px;
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 40px;
-}
-
-.challenges-section p {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 60px;
-}
-
-.challenges-section h3 {
-    font-size: 28px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.challenges-section .col-md-6 p {
     font-size: 20px;
     color: #555;
 }
@@ -423,7 +391,6 @@ section {
 /* Section Paddings */
 .features-section,
 .progress-section,
-.challenges-section,
 .tools-section,
 .success-stories-section,
 .call-to-action-section {
@@ -547,7 +514,7 @@ section {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
-    margin-bottom: 20px; /* 添加底部间距 */
+    margin-bottom: 20px; 
 }
 
 .tools-section .col-md-4:hover {
@@ -588,7 +555,7 @@ section {
 }
 
 .success-stories-wrapper {
-    background-color: #e0f7fa; /* 大框背景颜色 */
+    background-color: #e0f7fa; 
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -608,9 +575,9 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     text-align: left;
-    flex: 1 1 calc(33.333% - 40px); /* 每个小框占据三分之一的宽度，减去间距 */
-    min-width: 300px; /* 设置最小宽度 */
-    box-sizing: border-box; /* 包括内边距和边框在内的宽度计算方式 */
+    flex: 1 1 calc(33.333% - 40px); 
+    min-width: 300px;
+    box-sizing: border-box; 
 }
 
 .success-stories-section .blockquote {
@@ -638,3 +605,16 @@ html, body {
 .content-wrap {
     flex: 1;
 }
+
+.progress-image {
+    max-width: 80%; 
+    height: auto; 
+    margin-bottom: 20px; 
+    border: 2px solid #ccc; 
+    background-color: #f8f8f8; 
+    padding: 10px; 
+    border-radius: 5px; 
+}
+
+
+
