@@ -172,8 +172,30 @@ def check_in(habit_id):
                             'goal': habit.habit_goal,
                             'unit': habit.habit_unit
                             }), 200
+        else:
+            return jsonify({'status':'error', 'message':'Something went wrong'}), 400
         
-
+@app.route('/api/habits/progress/<int:habit_id>', methods = ['GET'])
+@login_required
+def view_progress(habit_id):
+    if request.method == 'GET':
+        habit = Habit.query.filter_by(id=habit_id).first()
+        if habit is None:
+            return jsonify({'status':'error', 'message':'Habit not found'}), 404
+        
+        if str(current_user.get_id()) != str(habit.user_id):
+            return jsonify({'status':'error', 'message':'Not your habit'}), 401
+        
+        progress = check_progress(habit_id)
+        if progress is not None:
+            return jsonify({'status':'success', 
+                            'message':'Check-in done',
+                            'completed': progress["completed"],
+                            'goal': habit.habit_goal,
+                            'unit': habit.habit_unit
+                            }), 200
+        else:
+            return jsonify({'status':'error', 'message':'Something went wrong'}), 400
 
 def check_progress(habit_id):
     '''Verify progress of an existing record'''

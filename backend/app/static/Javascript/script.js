@@ -196,7 +196,7 @@ function failHabit(habitDiv) {
 
 function viewHabitProgress(habitDiv) {
     const habitId = habitDiv.id;
-    fetch(`/api/habits/${habitId}/progress`)
+    fetch(`/api/habits/progress/${habitId}`)
     .then(response => response.json())
     .then(data => {
         alert(`Habit Progress:\nCompleted: ${data.completed}\nGoal: ${data.goal}\nUnit: ${data.unit}`);
