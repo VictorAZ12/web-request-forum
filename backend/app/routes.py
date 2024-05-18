@@ -255,7 +255,25 @@ def add_habit():
         else:
             return jsonify({'status':'error', 'message':'form data invalid'}), 400
     
-
+@app.route('/api/challenge_habit/progress/<int:habit_id>', methods=['GET'])
+@login_required
+def challenge_habit_progress(habit_id):
+    challenge_habit = UserChallenge.query.filter_by(habit_id=habit_id).first()
+    on_track = "On track" if check_progress(habit_id)["status"] == "Completed" else "Off track"
+    if challenge_habit is not None:
+        challenge_habits_all = UserChallenge.query.filter_by(challenge_id=challenge_habit.challenge_id).all()
+        total, completed = 0, 0
+        for habit in challenge_habits_all:
+            result = check_progress(habit.habit_id)
+            if result["status"] == "Completed":
+                completed += 1
+            total += 1
+        return jsonify({'status':'success', 
+                        'total': total,
+                        'completed': completed,
+                        'status': on_track}), 200
+    else:
+        return jsonify({'status':'error', 'message':'Habit not found'}), 404
 
 @app.route('/api/add_challenge_habit/<int:challenge_id>', methods=['POST'])
 @login_required

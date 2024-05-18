@@ -178,7 +178,7 @@ function setupChallengeHabitButtons(habitDiv) {
     });
 
     habitDiv.querySelector('.view-progress-btn').addEventListener('click', function () {
-        viewHabitProgress(habitDiv);
+        viewChallengeHabitProgress(habitDiv);
     });
 }
 function editHabit(habitDiv) {
@@ -245,7 +245,15 @@ function viewHabitProgress(habitDiv) {
     })
     .catch(error => console.error('Error viewing habit progress:', error));
 }
-
+function viewChallengeHabitProgress(habitDiv) {
+    const habitId = habitDiv.id;
+    fetch(`/api/challenge_habit/progress/${habitId}`)
+    .then(response => response.json())
+    .then(data => {
+        alert(`Habit Progress:\nYou are ${data.status}\nChallenges made: ${data.total}\nOn track challenges: ${data.completed}`);
+    })
+    .catch(error => console.error('Error viewing habit progress:', error));
+}
 function loadHabits() {
     fetch('/api/habits')
         .then(response => response.json())
