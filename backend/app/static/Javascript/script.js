@@ -95,7 +95,7 @@ function addHabitToDOM(habit) {
         <div class="habit-details">
             <div class="habit-name">${habit.habit_name}</div>
             <div class="habit-progress">0 / ${habit.habit_goal} ${habit.habit_unit}</div>
-            <span class="habit-toggle">â®Ÿ</span>
+            <span class="habit-toggle">â®?</span>
         </div>
         <div class="habit-actions hidden">
             <button class="check-in-btn">Check-In</button>
@@ -163,6 +163,7 @@ function editHabit(habitDiv) {
         .then(response => response.json())
         .then(data => {
             const form = document.getElementById('newHabitForm');
+            form.csrf_token.value = getCSRFToken();
             form.habitType.value = data.habit_type;
             form.habitName.value = data.habit_name;
             form.habitGoal.value = data.habit_goal;

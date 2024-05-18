@@ -108,23 +108,24 @@ def get_habits():
         result.append(habit.to_dict())
     return jsonify(result)
 
-@app.route('/api/add_habit', methods=['POST'])
+@app.route('/api/add_habit', methods=['POST', 'PUT'])
 @login_required
 def add_habit():
     habit_form = HabitForm()
     if habit_form.validate_on_submit():
-        habit = Habit(user_id=current_user.get_id(),
-                      habit_name = habit_form.habit_name.data,
-                      start_date = habit_form.start_date.data,
-                      habit_goal = habit_form.habit_goal.data,
-                      habit_unit = habit_form.habit_unit.data,
-                      habit_frequency = habit_form.habit_frequency.data,
-                      habit_type = habit_form.public.data,
-                      public = habit_form.start_date.data
-                      )
-        db.session.add(habit)
-        db.session.commit()
-        return redirect(url_for("dashboard"))
+        if request.method == 'POST':
+            habit = Habit(user_id=current_user.get_id(),
+                        habit_name = habit_form.habit_name.data,
+                        start_date = habit_form.start_date.data,
+                        habit_goal = habit_form.habit_goal.data,
+                        habit_unit = habit_form.habit_unit.data,
+                        habit_frequency = habit_form.habit_frequency.data,
+                        habit_type = habit_form.public.data,
+                        public = habit_form.start_date.data
+                        )
+            db.session.add(habit)
+            db.session.commit()
+            return redirect(url_for("dashboard"))
     
 
 @app.route('/api/add_challenge_habit', methods=['POST'])

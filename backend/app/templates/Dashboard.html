@@ -33,8 +33,9 @@
         <div class="modal-content">
             <span class="close" onclick="closeHabitModal()">&times;</span>
             <form id="newHabitForm">
+                {{ habit_form.csrf_token }}
                 <label for="habitType">Habit Type:</label>
-                <select id="habitType">
+                <select id="habitType" name="habitType" required>
                     <option value="">Select a habit type</option>
                 </select>
                 <label for="habitName">Habit Name:</label>
@@ -63,6 +64,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeChallengeModal()">&times;</span>
             <form id="newChallengeForm">
+                {{ challenge_form.csrf_token }}
                 <label for="challengeName">Challenge Name:</label>
                 <input type="text" id="challengeName" name="challengeName" required>
                 <label for="baseHabit">Base Habit:</label>
