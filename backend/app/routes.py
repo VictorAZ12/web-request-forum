@@ -107,7 +107,10 @@ def get_habits(habit_id):
             user_habits = Habit.query.filter_by(user_id=user_id).all()
             result = []
             for habit in user_habits:
-                result.append(habit.to_dict())
+                user_challenge = UserChallenge.query.filter_by(habit_id = habit.id).first()
+                habit_dic = habit.to_dict()
+                habit_dic["is_challenge"] = False if user_challenge is None else True
+                result.append(habit_dic)
             return jsonify(result), 200
         else:
             habit = Habit.query.filter_by(user_id=user_id, id=habit_id).first()

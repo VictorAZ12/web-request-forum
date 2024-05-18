@@ -72,25 +72,47 @@ function saveHabit() {
 
 // Add a habit to the DOM
 function addHabitToDOM(habit) {
-    const container = document.getElementById('habitsContainer');
+    const habitContainer = document.getElementById('habitsContainer');
+    const activeContainer = document.getElementById('activeChallenges');
     const habitDiv = document.createElement('div');
-    habitDiv.className = 'habit';
-    habitDiv.id = habit.id;
-    habitDiv.innerHTML = `
-        <div class="habit-details">
-            <div class="habit-name">${habit.habit_name}</div>
-            <div class="habit-progress">Loading...</div>
-            <span class="habit-toggle">&#x22EE;</span>
-        </div>
-        <div class="habit-actions hidden">
-            <button class="check-in-btn">Check-In</button>
-            <button class="fail-btn">Fail</button>
-            <button class="edit-btn">Edit</button>
-            <button class="view-progress-btn">View Progress</button>
-        </div>
-    `;
-    setupHabitButtons(habitDiv);
-    container.appendChild(habitDiv);
+    if (habit.is_challenge){
+        habitDiv.className = 'habit';
+        habitDiv.id = habit.id;
+        habitDiv.innerHTML = `
+            <div class="habit-details">
+                <div class="habit-name">${habit.habit_name}</div>
+                <div class="habit-progress">Loading...</div>
+                <span class="habit-toggle">&#x22EE;</span>
+            </div>
+            <div class="habit-actions hidden">
+                <button class="check-in-btn">Check-In</button>
+                <button class="view-progress-btn">View Progress</button>
+            </div>
+        `;
+        setupChallengeHabitButtons(habitDiv);
+        activeContainer.appendChild(habitDiv);
+    }
+    else{
+        habitDiv.className = 'habit';
+        habitDiv.id = habit.id;
+        habitDiv.innerHTML = `
+            <div class="habit-details">
+                <div class="habit-name">${habit.habit_name}</div>
+                <div class="habit-progress">Loading...</div>
+                <span class="habit-toggle">&#x22EE;</span>
+            </div>
+            <div class="habit-actions hidden">
+                <button class="check-in-btn">Check-In</button>
+                <button class="fail-btn">Fail</button>
+                <button class="edit-btn">Edit</button>
+                <button class="view-progress-btn">View Progress</button>
+            </div>
+        `;
+        setupHabitButtons(habitDiv);
+        habitContainer.appendChild(habitDiv);
+    }
+    
+        
 
     // Fetch and update progress data within the same function
     const habitId = habit.id;
@@ -142,15 +164,24 @@ function setupHabitButtons(habitDiv) {
         checkInHabit(habitDiv);
     });
 
-    habitDiv.querySelector('.fail-btn').addEventListener('click', function () {
-        failHabit(habitDiv);
+    habitDiv.querySelector('.view-progress-btn').addEventListener('click', function () {
+        viewHabitProgress(habitDiv);
+    });
+}
+function setupChallengeHabitButtons(habitDiv) {
+    habitDiv.querySelector('.habit-toggle').addEventListener('click', function () {
+        habitDiv.querySelector('.habit-actions').classList.toggle('hidden');
+    });
+
+
+    habitDiv.querySelector('.check-in-btn').addEventListener('click', function () {
+        checkInHabit(habitDiv);
     });
 
     habitDiv.querySelector('.view-progress-btn').addEventListener('click', function () {
         viewHabitProgress(habitDiv);
     });
 }
-
 function editHabit(habitDiv) {
     const habitId = habitDiv.id;
     fetch(`/api/habits/${habitId}`)
