@@ -28,11 +28,6 @@ function showHabitModal() {
     setMinDate('startDate');
 }
 
-function closeHabitModal() {
-    document.getElementById('habitModal').style.display = 'none';
-    document.getElementById('newHabitForm').reset();
-    document.getElementById('delete-btn').classList.add('hidden');
-}
 
 function loadHabitTypes() {
     fetch('/api/habit_types')
@@ -117,7 +112,7 @@ function showHabitModal() {
 function closeHabitModal() {
     document.getElementById('habitModal').style.display = 'none';
     document.getElementById('newHabitForm').reset();
-    document.getElementById('delete-btn').classList.add('hidden');
+    document.getElementById('delete-btn').style.display = 'none';
     delete document.getElementById('newHabitForm').dataset.isEdit;
     delete document.getElementById('newHabitForm').dataset.habitId;
 }
@@ -160,7 +155,7 @@ function editHabit(habitDiv) {
             form.dataset.habitId = habitId;
             form.dataset.isEdit = 'true';
             document.getElementById('habitModal').style.display = 'block';
-            document.getElementById('delete-btn').classList.remove('hidden');
+            document.getElementById('delete-btn').style.display = 'inline-block';
         })
         .catch(error => console.error('Error:', error));
 }
@@ -227,8 +222,9 @@ function deleteHabit() {
     fetch(`/api/habits/${habitId}`, {
         method: 'DELETE',
         headers: {
+            'Content-Type': 'application/json',
             'X-CSRFToken': getCSRFToken()
-        }
+        },
     })
     .then(() => {
         const habitDiv = document.getElementById(habitId);

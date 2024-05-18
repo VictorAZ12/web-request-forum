@@ -114,7 +114,7 @@ def get_habits(habit_id):
             if habit:
                 return jsonify(habit.to_dict())
             else:
-                return jsonify({'error': 'Habit not found'}), 404
+                return jsonify({'status':'error', 'message':'Habit not found'}), 404
     if request.method == 'PUT':
         habit_form = HabitForm()
         habit = Habit.query.filter_by(id=habit_id, user_id=current_user.get_id()).first()
@@ -128,10 +128,21 @@ def get_habits(habit_id):
             db.session.commit()
             return jsonify(habit.to_dict()), 201
         else:
-            return jsonify({'error': 'Habit not found'}), 404
+            return jsonify({'status':'error', 'message':'Habit not found'}), 404
     if request.method == 'DELETE':
         habit = Habit.query.filter_by(id=habit_id, user_id=current_user.get_id()).first()
+        if habit is not None:
+            try:
+                db.session.delete(habit)
+                db.session.commit()
+                return jsonify({'status':'success', 'message':'Habit deleted.'}), 200
+            except:
+                 return jsonify({'status':'error', 'message':'Something is wrong.'}), 500
+        else:
+            return jsonify({'status':'error', 'message':'Habit not found'}), 404
         
+
+
 
 @app.route('/api/add_habit', methods=['POST'])
 @login_required
