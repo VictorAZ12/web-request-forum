@@ -304,16 +304,16 @@ def get_challenges():
 def add_challenge():
     challenge_form = ChallengeForm()
     if challenge_form.validate_on_submit():
-        challenge = Challenge(challenge_name = challenge_form.challenge_name.data,
+        challenge = Challenge(challenge_name = challenge_form.challengeName.data,
                               description = challenge_form.description.data,
                               creator_id=current_user.get_id(),
                               challenge_goal=challenge_form.challengeGoal.data,
-                              challenge_unit=challenge_form.challengeUnit,
-                              challenge_frequency=challenge_form.challengeFrequency,
-                              challenge_type=challenge_form.challengeType)
+                              challenge_unit=challenge_form.challengeUnit.data,
+                              challenge_frequency=challenge_form.challengeFrequency.data,
+                              challenge_type=challenge_form.challengeType.data)
         db.session.add(challenge)
         db.session.commit()
-        return jsonify({"status": "success", "message": "challenge created"}), 200
+        return jsonify(challenge.to_dic()), 200
     else:
         return jsonify({'status':'error', 'message':'form data invalid'}), 400
 

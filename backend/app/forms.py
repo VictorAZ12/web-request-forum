@@ -23,7 +23,7 @@ class HabitForm(FlaskForm):
     submit = SubmitField('Add habit')
 
 class ChallengeForm(FlaskForm):
-    challenge_name = StringField('Challenge name', validators=[DataRequired()])
+    challengeName = StringField('Challenge name', validators=[DataRequired()])
     description = StringField('description')
     challengeGoal = IntegerField('Goal numbers', validators=[DataRequired()])
     challengeUnit = StringField('Unit', validators=[DataRequired()])
