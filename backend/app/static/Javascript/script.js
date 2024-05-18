@@ -162,7 +162,7 @@ function editHabit(habitDiv) {
 
 function checkInHabit(habitDiv) {
     const habitId = habitDiv.id;
-    fetch(`/api/habits/${habitId}/checkin`, {
+    fetch(`/api/habits/checkin/${habitId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
