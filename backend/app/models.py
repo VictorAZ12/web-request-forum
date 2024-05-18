@@ -10,9 +10,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), nullable=False)
     fullname = db.Column(db.String(100))
     dob = db.Column(db.Date)
-    address = db.Column(db.String(200))
-    last_login = db.Column(db.DateTime, default=datetime.utcnow)
-    create_date = db.Column(db.DateTime, default=datetime.utcnow)
+    # address = db.Column(db.String(200))
+    # last_login = db.Column(db.DateTime, default=datetime.utcnow)
+    # create_date = db.Column(db.DateTime, default=datetime.utcnow)
     public = db.Column(db.Boolean, default=True)
     # Authentication attributes
     # is_active, is_authenticated,  get_id() provided by UserMixin
@@ -22,16 +22,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.uid}', '{self.username}')"
-    def to_dict(self):
-        return {
-            'uid': self.uid,
-            'fullname': self.fullname,
-            'dob': self.dob.strftime('%Y-%m-%d') if self.dob else None,
-            'address': self.address,
-            'last_login': self.last_login.strftime('%Y-%m-%d %H:%M:%S') if self.last_login else None,
-            'create_date': self.create_date.strftime('%Y-%m-%d %H:%M:%S') if self.create_date else None,
-            'public': self.public
-        }
+
     def get_id(self):
         """Overwrite get_id in UserMixin"""
         return str(self.uid)
@@ -48,10 +39,6 @@ class User(db.Model, UserMixin):
         """
         equal = self.__eq__(other)
         return not equal
-
-
-
-
 
 class Follow(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('user.uid'), primary_key=True)
@@ -73,55 +60,70 @@ class Tip(db.Model):
     content = db.Column(db.Text, nullable=False)
     public = db.Column(db.Boolean, default=True)
 
+class HabitType(db.Model):
+    __tablename__ = 'habit_type'
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(100), nullable=False)
+    def to_dic(self):
+        return{
+            'id': self.id,
+            'type': self.type
+        }
+
 class Habit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
     habit_name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text)
-    target_date = db.Column(db.DateTime)
-    progress = db.Column(db.Float)
+    start_date = db.Column(db.DateTime, nullable=False)
+    habit_goal = db.Column(db.Integer, nullable=False) 
+    habit_unit = db.Column(db.String(100), nullable=False)
+    habit_frequency = db.Column(db.Integer, nullable=False) # 1 for per day, 2 for per week, 3 for per month
+    habit_type = db.Column(db.Integer, db.ForeignKey('habit_type.id'))
     public = db.Column(db.Boolean, default=True)
-
-class Goal(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text)
-    public = db.Column(db.Boolean, default=True)
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
-
-class Challenge(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text)
-    public = db.Column(db.Boolean, default=True)
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.name,
-            'content': self.content,
-            'creator_id': self.creator_id,
+            'user_id': self.user_id,
+            'habit_name': self.habit_name,
+            'start_date': self.start_date.strftime('%Y-%m-%d') if isinstance(self.start_date, datetime) else self.start_date,
+            'habit_goal': self.habit_goal,
+            'habit_unit': self.habit_unit,
+            'habit_frequency': self.habit_frequency,
+            'habit_type': self.habit_type,
             'public': self.public
         }
 
+
+class HabitRecord(db.Model):
+    __tablename__ = 'habit_record'
+    id = db.Column(db.Integer, primary_key=True)
+    record_date = db.Column(db.DateTime, default=datetime.utcnow)
+    habit = db.Column(db.Integer, db.ForeignKey('habit.id'))
+
+class Challenge(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    challenge_name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
+    challenge_goal = db.Column(db.Integer, nullable=False) 
+    challenge_unit = db.Column(db.String(100), nullable=False)
+    challenge_frequency = db.Column(db.Integer, nullable=False) # 1 for per day, 2 for per week, 3 for per month
+    challenge_type = db.Column(db.Integer, db.ForeignKey('habit_type.id'))
+    def to_dic(self):
+        return {
+            'id': self.id,
+            'challenge_name': self.challenge_name,
+            'description': self.description,
+            'creator_id': self.creator_id,
+            'challenge_goal': self.challenge_goal,
+            'challenge_unit': self.challenge_unit,
+            'challenge_frequency': self.challenge_frequency,
+            'challenge_type': self.challenge_type
+        }
+
 class UserChallenge(db.Model):
+    __tablename__ = 'user_challenge'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
     challenge_id = db.Column(db.Integer, db.ForeignKey('challenge.id'), nullable=False)
-    create_date = db.Column(db.DateTime, default=datetime.utcnow)
-    target_date = db.Column(db.DateTime)
-    completed = db.Column(db.Boolean, default=False)
-    public = db.Column(db.Boolean, default=True)
-
-class ChallengeGoal(db.Model):
-    challenge_id = db.Column(db.Integer, db.ForeignKey('challenge.id'), primary_key=True)
-    goal_id = db.Column(db.Integer, db.ForeignKey('goal.id'), primary_key=True)
-
-class UserGoal(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False)
-    goal_id = db.Column(db.Integer, db.ForeignKey('goal.id'), nullable=False)
-    create_date = db.Column(db.DateTime, default=datetime.utcnow)
-    target_date = db.Column(db.DateTime)
-    completed = db.Column(db.Boolean, default=False)
-    public = db.Column(db.Boolean, default=True)
+    habit_id = db.Column(db.Integer, db.ForeignKey('habit.id'), nullable=False)

@@ -1,0 +1,620 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding-top: 70px; 
+}
+
+/* Navigation Bar Styles */
+.main-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #007bff;
+    padding: 20px 0;
+    border-bottom: 2px solid #0056b3;
+}
+
+.main-navigation .navbar-brand {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.main-navigation .nav-link {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.main-navigation .nav-link:hover {
+    color: #d4d4d4;
+}
+
+.navbar-toggler {
+    border-color: #fff;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;base64,..."); /* Ensure this URL is correct */
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    background-color: #343a40;
+    border: none;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item:hover {
+    background-color: #007bff;
+}
+
+/* Header Styles */
+.main-header {
+    background: linear-gradient(to right, #0062cc, #0056b3);
+    color: #fff;
+    padding: 100px 0;
+}
+
+.main-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.main-header p {
+    font-size: 1.25rem;
+    margin-top: 20px;
+}
+
+.main-header .btn-primary {
+    background-color: #ffc107;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.25rem;
+    border-radius: 30px;
+}
+
+.main-header .btn-primary:hover {
+    background-color: #e0a800;
+}
+
+.btn-lg {
+    font-size: 20px;
+    padding: 15px 30px;
+}
+
+/* Section Styles */
+section {
+    margin-bottom: 80px;
+}
+
+.features-section {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+}
+
+.features-section h2 {
+    color: #343a40;
+    margin-bottom: 40px;
+}
+
+.features-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-item-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+
+.feature-icon {
+    max-width: 80%; 
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 10%;
+}
+
+
+.noon-icon {
+    max-width: 84%; 
+}
+
+
+.evening-icon {
+    max-width: 90%; 
+}
+
+
+/* Style for Feature Items Text */
+.feature-item h3 {
+    font-size: 1.75rem;
+    color: #343a40;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.feature-item ul {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-item ul li {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.feature-item ul li:before {
+    content: "✔️";
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    color: #007bff;
+}
+
+
+/* Enhanced Style for Section Headings */
+.features-section h2,
+.progress-section h2,
+.tools-section h2,
+.success-stories-section h2,
+.call-to-action-section h2 {
+    font-size: 2.5rem; 
+    font-weight: bold;
+    color: #343a40; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    margin-bottom: 1.5rem; 
+    position: relative; 
+}
+
+.features-section h2::before,
+.progress-section h2::before,
+.tools-section h2::before,
+.success-stories-section h2::before,
+.call-to-action-section h2::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -10px; 
+    transform: translateX(-50%);
+    width: 50px; 
+    height: 4px; 
+    background-color: #007bff; 
+    border-radius: 2px; 
+}
+
+.features-section h2 {
+    margin-bottom: 3rem; 
+}
+
+.text-center {
+    text-align: center; 
+}
+
+
+.progress-section {
+    background-color: #fff;
+    padding: 100px 0;
+}
+
+.progress-section h2 {
+    font-size: 42px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 40px;
+}
+
+.progress-section p {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 60px;
+}
+
+.progress-section .col-md-4 p {
+    font-size: 20px;
+    color: #555;
+}
+
+.tools-section {
+    background-color: #fff;
+    padding: 100px 0;
+}
+
+.tools-section h2 {
+    font-size: 42px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 40px;
+}
+
+.tools-section p {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 60px;
+}
+
+.tools-section h3 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.tools-section .col-md-4 p {
+    font-size: 20px;
+    color: #555;
+}
+
+.success-stories-section {
+    background-color: #f8f9fa;
+    padding: 100px 0;
+}
+
+.success-stories-section h2 {
+    font-size: 42px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 40px;
+}
+
+.success-stories-section p {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 60px;
+}
+
+.success-stories-section .blockquote p {
+    font-size: 22px;
+    color: #555;
+    font-style: italic;
+}
+
+.success-stories-section .blockquote-footer {
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Footer Styles */
+.main-footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 40px 0;
+}
+
+.main-footer h4 {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #ffc107;
+}
+
+.footer-social {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer-social li {
+    margin-left: 15px;
+}
+
+.footer-social a {
+    color: #ffc107;
+    font-size: 1.5rem;
+}
+
+.footer-social a:hover {
+    color: #e0a800;
+}
+
+/* Login/Register Section Styles */
+.login-register-section {
+    padding: 100px 0;
+}
+
+.login-register-section .card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-register-section .card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+}
+
+.login-register-section .card-body {
+    padding: 30px;
+}
+
+.login-register-section .form-group {
+    margin-bottom: 20px;
+}
+
+.login-register-section .btn {
+    width: 100%;
+    padding: 10px;
+}
+
+.login-register-section .mt-3 a {
+    color: #007bff;
+}
+
+.login-register-section .mt-3 a:hover {
+    text-decoration: underline;
+}
+
+/* Button Hover Styles */
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Section Paddings */
+.features-section,
+.progress-section,
+.tools-section,
+.success-stories-section,
+.call-to-action-section {
+    padding: 100px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    img.feature-icon, img.progress-icon, img.challenge-icon, img.tool-icon {
+        max-width: 80%;
+        height: auto;
+    }
+
+    .features-flex {
+        flex-direction: column;
+    }
+
+    .feature-item-group {
+        flex-direction: column;
+    }
+
+    .features-section .col-md-4,
+    .progress-section .col-md-4,
+    .challenges-section .col-md-6,
+    .tools-section .col-md-4 {
+        margin-bottom: 20px;
+    }
+}
+
+/* Call-to-Action Section */
+.call-to-action-section {
+    background-color: #f8f9fa; 
+    border-top: 2px solid #007bff; 
+    border-bottom: 2px solid #007bff; 
+    padding: 3rem 0; 
+}
+
+.call-to-action-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold; 
+    color: #343a40;
+    margin-bottom: 1rem; 
+}
+
+.call-to-action-section p {
+    font-size: 1.25rem;
+    color: #6c757d; 
+    margin-bottom: 2rem; 
+}
+
+.call-to-action-section .btn {
+    font-size: 1.25rem; 
+    padding: 0.75rem 1.5rem; 
+    border-radius: 0.3rem; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.call-to-action-section .btn:hover {
+    background-color: #0056b3; 
+    transform: translateY(-3px); 
+}
+
+.call-to-action-section .btn:focus {
+    outline: none; 
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); 
+}
+
+/* Add custom styles for the new content below the form */
+.login-register-section .mt-5 {
+    margin-top: 3rem !important;
+}
+
+.login-register-section h2 {
+    font-size: 2rem;
+    color: #007bff;
+}
+
+.login-register-section p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.login-register-section ul {
+    margin-top: 1rem;
+}
+
+.login-register-section ul li {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.login-register-section .text-success {
+    margin-right: 0.5rem;
+}
+
+.tools-section {
+    background-color: #fff;
+    padding: 60px 0;
+}
+
+.tools-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.tools-section p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #666;
+}
+
+.tools-section .row {
+    justify-content: center;
+}
+
+.tools-section .col-md-4 {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 20px; 
+}
+
+.tools-section .col-md-4:hover {
+    transform: translateY(-10px);
+}
+
+.tools-section .tool-icon {
+    margin-bottom: 20px;
+}
+
+.tools-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.tools-section .col-md-4 p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.success-stories-section {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+}
+
+.success-stories-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.success-stories-section p {
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    color: #666;
+}
+
+.success-stories-wrapper {
+    background-color: #e0f7fa; 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.success-stories-section .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.success-stories-section .col-md-4 {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: left;
+    flex: 1 1 calc(33.333% - 40px); 
+    min-width: 300px;
+    box-sizing: border-box; 
+}
+
+.success-stories-section .blockquote {
+    font-size: 1rem;
+    color: #666;
+}
+
+.success-stories-section .blockquote-footer {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #999;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    flex: 1;
+}
+
+.progress-image {
+    max-width: 80%; 
+    height: auto; 
+    margin-bottom: 20px; 
+    border: 2px solid #ccc; 
+    background-color: #f8f8f8; 
+    padding: 10px; 
+    border-radius: 5px; 
+}
+
+
+

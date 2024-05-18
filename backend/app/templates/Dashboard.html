@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <img src="{{ url_for('static', filename='Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img">
+            <h2>{{ user.username if user else 'User Name' }}</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="active"><a href="#">All Habits</a></li>
+			<li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <h1>All Habits</h1>
+        <button class="add-habit-btn" onclick="showHabitModal()">+ Add Habit</button>
+        <button class="add-challenge-btn" onclick="showChallengeModal()">+ Add Challenge</button>
+        <div id="habitsContainer" class="habits-container"></div>
+        <h2>Active Challenges</h2>
+        <div id="activeChallenges" class="habits-container"></div>
+        <h2>All Challenges</h2>
+        <div id="allChallenges" class="habits-container"></div>
+    </div>
+
+    <!-- Habit Modal -->
+    <div id="habitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHabitModal()">&times;</span>
+            <form id="newHabitForm">
+                {{ habit_form.csrf_token }}
+                <label for="habitType">Habit Type:</label>
+                <select id="habitType" name="habitType" required>
+                    <option value="">Select a habit type</option>
+                </select>
+                <label for="habitName">Habit Name:</label>
+                <input type="text" id="habitName" name="habitName" required>
+                <label for="habitGoal">Goal:</label>
+                <input type="number" id="habitGoal" name="habitGoal" required min="1">
+                <label for="habitUnit">Unit:</label>
+                <input type="text" id="habitUnit" name="habitUnit" required>
+                <label for="habitFrequency">Frequency:</label>
+                <select id="habitFrequency" name="habitFrequency" required>
+                    <option value="1">Per Day</option>
+                    <option value="2">Per Week</option>
+                    <option value="3">Per Month</option>
+                </select>
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" required>
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeHabitModal()">Cancel</button>
+                <button type="button" id="delete-btn" class="delete-btn" onclick="deleteHabit()">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Challenge Modal -->
+    <div id="challengeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeChallengeModal()">&times;</span>
+            <form id="newChallengeForm">
+                {{ challenge_form.csrf_token }}
+                <label for="challengeName">Challenge Name:</label>
+                <input type="text" id="challengeName" name="challengeName" required>
+                <label for="description">description:</label>
+                <input type="text" id="description" name="description" required>
+                <label for="challengeType">Challenge Type:</label>
+                <select id="challengeType" name="challengeType" required>
+                    <option value="">Select a challenge type</option>
+                </select>
+                <label for="challengeGoal">Goal:</label>
+                <input type="number" id="challengeGoal" name="challengeGoal" required min="1">
+                <label for="challengeUnit">Unit:</label>
+                <input type="text" id="challengeUnit" name="challengeUnit" required>
+                <label for="challengeFrequency">Frequency:</label>
+                <select id="challengeFrequency" name="challengeFrequency" required>
+                    <option value="1">Per Day</option>
+                    <option value="2">Per Week</option>
+                    <option value="3">Per Month</option>
+                </select>
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeChallengeModal()">Cancel</button>
+                <button type="button" id="delete-challenge-btn" class="delete-btn hidden" onclick="deleteChallenge()">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='Javascript/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='Javascript/challenge-script.js') }}"></script>
+</body>
+</html>
