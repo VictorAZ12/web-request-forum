@@ -3,51 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HabitNest Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
 </head>
 <body>
     <div class="sidebar">
         <div class="profile">
-            <img src="{{ url_for('static', filename='Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img" id="profileImageDisplay">
-            <h2 id="username">Hung Hoang</h2>
+            <img src="{{ url_for('static', filename='Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img">
+            <h2>{{ user.username if user else 'User Name' }}</h2>
         </div>
         <ul class="nav-links">
-            <li class="active"><a href="{{ url_for('dashboard') }}">All Habits</a></li>
-            <li><a href="{{ url_for('settings') }}">Settings</a></li>
+            <li class="active"><a href="#">All Habits</a></li>
+			<li><a href="{{ url_for('settings') }}">Settings</a></li>
         </ul>
     </div>
     <div class="main-content">
         <h1>All Habits</h1>
-        <button class="add-habit-btn" onclick="showModal()">Add Habit</button>
-        <div id="habitsContainer"></div>
-        <h2>Community Challenges</h2>
-        <button class="add-challenge-btn" onclick="showChallengeModal()">Add Challenge</button>
-        <div id="activeChallenges">
-            <h3>Active Challenges</h3>
-        </div>
-        <div id="futureChallenges">
-            <h3>Future Challenges</h3>
-        </div>
-        <div id="successContainer" class="status-container">
-            <h3>Successful Habits</h3>
-        </div>
-        <div id="failContainer" class="status-container">
-            <h3>Failed Habits</h3>
-        </div>
+        <button class="add-habit-btn" onclick="showHabitModal()">+ Add Habit</button>
+        <button class="add-challenge-btn" onclick="showChallengeModal()">+ Add Challenge</button>
+        <div id="habitsContainer" class="habits-container"></div>
+        <h2>Active Challenges</h2>
+        <div id="activeChallenges" class="habits-container"></div>
+        <h2>Future Challenges</h2>
+        <div id="futureChallenges" class="habits-container"></div>
     </div>
 
     <!-- Habit Modal -->
     <div id="habitModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <form id="newHabitForm" method="POST" action="{{ url_for('add_habit') }}">
-                {{ habit_form.hidden_tag() }}
-                {{ habit_form.habit_name.label }} {{ habit_form.habit_name }}
-                {{ habit_form.description.label }} {{ habit_form.description }}
-                {{ habit_form.target_date.label }} {{ habit_form.target_date }}
-                {{ habit_form.submit(class="save-btn") }}
-                <button type="button" class="cancel-btn", onclick=closeModal()>Cancel</button>
+            <span class="close" onclick="closeHabitModal()">&times;</span>
+            <form id="newHabitForm">
+                <label for="habitType">Habit Type:</label>
+                <select id="habitType">
+                    <option value="">Select a habit type</option>
+                </select>
+                <label for="habitName">Habit Name:</label>
+                <input type="text" id="habitName" name="habitName" required>
+                <label for="habitGoal">Goal:</label>
+                <input type="number" id="habitGoal" name="habitGoal" required min="1">
+                <label for="habitUnit">Unit:</label>
+                <input type="text" id="habitUnit" name="habitUnit" required>
+                <label for="habitFrequency">Frequency:</label>
+                <select id="habitFrequency" name="habitFrequency" required>
+                    <option value="1">Per Day</option>
+                    <option value="2">Per Week</option>
+                    <option value="3">Per Month</option>
+                </select>
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" required>
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeHabitModal()">Cancel</button>
+                <button type="button" id="delete-btn" class="delete-btn hidden" onclick="deleteHabit()">Delete</button>
             </form>
         </div>
     </div>
@@ -56,37 +62,21 @@
     <div id="challengeModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeChallengeModal()">&times;</span>
-            <form id="newChallengeForm" method="POST" action="{{ url_for('add_challenge')}}">
-                
-                {{ challenge_form.hidden_tag() }}
-                {{ challenge_form.challenge_name.label }} {{ challenge_form.challenge_name }}
-                {{ challenge_form.content.label }} {{ challenge_form.content }}
-                {{ challenge_form.public.label }} {{ challenge_form.public }}
-                {{ challenge_form.submit(class="save-btn") }}
-                
-                <button type="button" class="cancel-btn", onclick=closeChallengeModal()>Cancel</button>
+            <form id="newChallengeForm">
+                <label for="challengeName">Challenge Name:</label>
+                <input type="text" id="challengeName" name="challengeName" required>
+                <label for="baseHabit">Base Habit:</label>
+                <select id="baseHabit" name="baseHabit" required>
+                    <option value="">Select a base habit</option>
+                </select>
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeChallengeModal()">Cancel</button>
+                <button type="button" id="delete-challenge-btn" class="delete-btn hidden" onclick="deleteChallenge()">Delete</button>
             </form>
         </div>
     </div>
 
-    <!-- View Challenge Modal -->
-    <div id="viewChallengeModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeViewChallengeModal()">&times;</span>
-            <div id="viewChallengeDetails"></div>
-        </div>
-    </div>
-
-    <!-- Confirm Modal -->
-    <div id="confirmModal" class="modal">
-        <div class="modal-content">
-            <p id="confirmMessage"></p>
-            <button id="confirmOkBtn" class="save-btn">OK</button>
-            <button id="confirmCancelBtn" class="cancel-btn">Cancel</button>
-        </div>
-    </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script src="{{ url_for('static', filename='challenge-script.js') }}"></script>
+    <script src="{{ url_for('static', filename='Javascript/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='Javascript/challenge-script.js') }}"></script>
 </body>
 </html>

@@ -77,7 +77,8 @@ def dashboard():
     challenge_form = ChallengeForm()
     return render_template('Dashboard.html', 
                            habit_form = habit_form,
-                           challenge_form = challenge_form)
+                           challenge_form = challenge_form,
+                           user = current_user)
 
 @app.route('/settings', methods=['GET'])
 def settings():
@@ -93,6 +94,7 @@ def get_habit_types():
     for habit_type in habit_types:
         result.append(habit_type.to_dic())
     return jsonify(result)
+
 
 
 @app.route('/api/habits', methods=['GET'])
@@ -123,6 +125,7 @@ def add_habit():
         db.session.add(habit)
         db.session.commit()
         return redirect(url_for("dashboard"))
+    
 
 @app.route('/api/add_challenge_habit', methods=['POST'])
 @login_required

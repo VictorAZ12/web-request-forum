@@ -5,7 +5,8 @@ var joinedUsers = {};
 
 document.addEventListener('DOMContentLoaded', function() {
     loadChallenges();
-    setMinDateForChallenge(); // Ensure the min date is set when the page loads
+    setMinDateForChallenge();
+    loadBaseHabits();
 });
 
 function getCSRFToken() {
@@ -25,6 +26,25 @@ function loadChallenges() {
         });
     })
     .catch(error => console.error('Error loading challenges:', error));
+}
+
+function loadBaseHabits() {
+    fetch('/api/habits', {
+        headers: {
+            'X-CSRFToken': getCSRFToken()
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const baseHabitSelect = document.getElementById('baseHabit');
+        data.forEach(habit => {
+            const option = document.createElement('option');
+            option.value = habit.id;
+            option.textContent = habit.habit_name;
+            baseHabitSelect.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Error loading base habits:', error));
 }
 
 // Show the challenge modal
@@ -63,43 +83,22 @@ function setMinDateForChallenge() {
     document.getElementById('challengeStartDate').setAttribute('min', today);
 }
 
-// Update unit based on selected habit
-document.getElementById('habitNameChallenge').addEventListener('change', function() {
-    var selectedOption = this.options[this.selectedIndex];
-    var unit = selectedOption.getAttribute('data-unit');
-    document.getElementById('challengeUnit').value = unit;
-});
-
 // Handle challenge form submission
 document.getElementById('newChallengeForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const challengeName = document.getElementById('challengeName').value;
-    const habitName = document.getElementById('habitNameChallenge').value;
-    const challengeGoal = document.getElementById('challengeGoal').value;
-    const challengeUnit = document.getElementById('challengeUnit').value;
-    const challengeStartDate = document.getElementById('challengeStartDate').value;
-    const today = new Date().toISOString().split('T')[0];
-
-    if (!challengeStartDate) {
-        alert('Please select a start date.');
-        return;
-    }
-
-    if (challengeStartDate < today) {
-        alert('Please select a date that is not in the past.');
-        return;
-    }
+    const baseHabit = document.getElementById('baseHabit').value;
 
     if (this.dataset.isEdit === 'true') {
         const challengeId = this.dataset.challengeId;
-        updateChallenge(challengeId, challengeName, habitName, challengeGoal, challengeUnit, challengeStartDate);
+        updateChallenge(challengeId, challengeName, baseHabit);
     } else {
-        addChallenge(challengeName, habitName, challengeGoal, challengeUnit, challengeStartDate);
+        addChallenge(challengeName, baseHabit);
     }
     closeChallengeModal();
 });
 
-function addChallenge(challengeName, habitName, challengeGoal, challengeUnit, challengeStartDate) {
+function addChallenge(challengeName, baseHabit) {
     fetch('/api/challenges', {
         method: 'POST',
         headers: {
@@ -108,10 +107,7 @@ function addChallenge(challengeName, habitName, challengeGoal, challengeUnit, ch
         },
         body: JSON.stringify({
             name: challengeName,
-            habit: habitName,
-            goal: challengeGoal,
-            unit: challengeUnit,
-            startDate: challengeStartDate
+            base_habit: baseHabit
         })
     })
     .then(response => response.json())
@@ -224,7 +220,7 @@ function editChallenge(button) {
 
     showChallengeModal();
     document.getElementById('challengeName').value = challengeName;
-    document.getElementById('habitNameChallenge').value = habitName;
+    document.getElementById('baseHabit').value = habitName;
     document.getElementById('challengeGoal').value = challengeGoal;
     document.getElementById('challengeUnit').value = challengeUnit;
     document.getElementById('challengeStartDate').value = challengeStartDate;
@@ -255,7 +251,7 @@ function viewChallenge(challengeId) {
 }
 
 // Update a challenge
-function updateChallenge(challengeId, name, habit, goal, unit, startDate) {
+function updateChallenge(challengeId, name, baseHabit) {
     fetch(`/api/challenges/${challengeId}`, {
         method: 'PUT',
         headers: {
@@ -264,24 +260,15 @@ function updateChallenge(challengeId, name, habit, goal, unit, startDate) {
         },
         body: JSON.stringify({
             name: name,
-            habit: habit,
-            goal: goal,
-            unit: unit,
-            startDate: startDate
+            base_habit: baseHabit
         })
     })
     .then(response => response.json())
     .then(data => {
         const challengeDiv = document.getElementById(challengeId);
         challengeDiv.querySelector('.challenge-name').textContent = name;
-        challengeDiv.querySelector('.challenge-goal').textContent = `${goal} ${unit}`;
-        challengeDiv.querySelector('.challenge-start-date').textContent = `Starts: ${startDate}`;
-        challengeDiv.querySelector('.challenge-habit').textContent = `Habit: ${habit}`;
         challengeDiv.dataset.name = name;
-        challengeDiv.dataset.habit = habit;
-        challengeDiv.dataset.goal = goal;
-        challengeDiv.dataset.unit = unit;
-        challengeDiv.dataset.startDate = startDate;
+        challengeDiv.dataset.habit = baseHabit;
     })
     .catch(error => console.error('Error updating challenge:', error));
 }

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
 </head>
 <body>
     <div class="sidebar">
         <div class="profile">
-            <img src="{{ url_for('static', filename='Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img" id="profileImageDisplay">
-            <h2 id="username">Hung Hoang</h2>
+            <img src="{{ url_for('static', filename='Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img">
+            <h2>{{ user.username if user else 'User Name' }}</h2>
         </div>
         <ul class="nav-links">
             <li><a href="{{ url_for('dashboard') }}">All Habits</a></li>
@@ -35,6 +35,6 @@
         <button class="cancel-btn" onclick="logout()">Logout</button>
     </div>
 
-    <script src="{{ url_for('static', filename='settings-script.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/settings-script.js') }}"></script>
 </body>
 </html>
