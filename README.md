@@ -18,7 +18,7 @@ HabitNest is a web-based platform designed to enhance productivity and personal 
     ```console
     git clone https://github.com/VictorAZ12/web-request-forum`
     ```
-2. (To be continued after implementation)
+2. Navigate to the backend folder, then follow the README.md in the folder to deploy.
 ## Implementation
 ### Front end
 - Engaging Interface: Modern and motivational design with interactive elements like progress bars and achievement unlock animations.
