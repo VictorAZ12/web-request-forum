@@ -179,6 +179,10 @@ body {
     opacity: 0.8;
 }
 
+.delete-challenge-btn {
+    display: none;
+}
+
 .profile h2 {
     font-size: 18px;
     margin: 10px 0 0;

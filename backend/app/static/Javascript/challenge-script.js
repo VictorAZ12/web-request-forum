@@ -127,6 +127,7 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
         <div class="challenge-actions hidden">
             <div class="challengeGoal">${challengeGoal} ${challengeUnit} ${frequencyText} </div>
             <button class="join-btn" onclick="joinChallenge('${challengeDivId}')">Join</button>
+            <button id="delete-challenge-btn" class="delete-challenge-btn" onclick="deleteChallenge('${challengeDivId}')">Delete</button>
         </div>
     `;
 
@@ -134,6 +135,10 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
     challengeDiv.querySelector('.challenge-toggle').addEventListener('click', function() {
         this.parentNode.nextElementSibling.classList.toggle('hidden');
     });
+    // control delete button display
+    if (document.getElementById('user-id').textContent === String(creator_id)){
+        challengeDiv.querySelector('.delete-challenge-btn').style.display = 'block';
+    }
 
     document.getElementById('allChallenges').appendChild(challengeDiv);
 
