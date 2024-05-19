@@ -135,14 +135,23 @@ def get_habits(habit_id):
     if request.method == 'DELETE':
         habit = Habit.query.filter_by(id=habit_id, user_id=current_user.get_id()).first()
         if habit is not None:
+            # clear progress records
+            HabitRecord.query.filter_by(habit=habit_id).delete()
+            db.session.commit()
+            # clear challenge records
+            UserChallenge.query.filter_by(habit_id=habit_id).delete()
+            db.session.commit()
             try:
                 db.session.delete(habit)
                 db.session.commit()
                 return jsonify({'status':'success', 'message':'Habit deleted.'}), 200
             except:
                  return jsonify({'status':'error', 'message':'Something is wrong.'}), 500
+        
         else:
             return jsonify({'status':'error', 'message':'Habit not found'}), 404
+
+        
         
 
 @app.route('/api/habits/checkin/<int:habit_id>', methods = ['GET', 'POST'])
@@ -202,7 +211,6 @@ def view_progress(habit_id):
 
 def check_progress(habit_id):
     '''Verify progress of an existing record'''
-
     habit = Habit.query.filter_by(id=habit_id).first()
     if habit is None:
         return None
@@ -313,7 +321,12 @@ def delete_challenge_habit(habit_id):
     if habit is not None:
         db.session.delete(habit)
         db.session.commit()
-
+    # clear progress records
+    HabitRecord.query.filter_by(habit=habit_id).delete()
+    db.session.commit()
+    # clear challenge record
+    UserChallenge.query.filter_by(habit_id=habit_id).delete()
+    db.session.commit()
     user_challenge = UserChallenge.query.filter_by(habit_id=habit_id).first()
     if user_challenge is not None:
         db.session.delete(user_challenge)
@@ -402,7 +415,6 @@ def get_users():
     ''' Get list of all users '''
     users = User.query.filter_by(public=True).all()
     users_list = [repr(user) for user in users]
-    print(users_list)
     return jsonify(users_list)
 
 
