@@ -87,6 +87,7 @@ function addHabitToDOM(habit) {
             <div class="habit-actions hidden">
                 <button class="check-in-btn">Check-In</button>
                 <button class="view-progress-btn">View Progress</button>
+                <button id="quit-challenge-btn" class="quit-challenge-btn" onclick="deleteChallengeHabit('${habit.id}')">Quit</button>
             </div>
         `;
         setupChallengeHabitButtons(habitDiv);
@@ -284,3 +285,18 @@ function deleteHabit() {
     .catch(error => console.error('Error deleting habit:', error));
 }
 
+function deleteChallengeHabit(habitId){
+    fetch(`/api/delete_challenge_habit/${habitId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        },
+    })
+    .then(() => {
+        const habitDiv = document.getElementById(habitId);
+        habitDiv.parentNode.removeChild(habitDiv);
+        closeHabitModal();
+    })
+    .catch(error => console.error('Error deleting habit:', error));
+}

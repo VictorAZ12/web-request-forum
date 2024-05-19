@@ -305,6 +305,23 @@ def add_challenge_habit(challenge_id):
         else:
             return jsonify({'status':'error', 'message':'form data invalid'}), 400
         
+@app.route('/api/delete_challenge_habit/<int:habit_id>', methods=['DELETE'])
+@login_required
+def delete_challenge_habit(habit_id):
+    '''Delete a habit created from a challenge'''
+    habit = Habit.query.filter_by(id=habit_id).first()
+    if habit is not None:
+        db.session.delete(habit)
+        db.session.commit()
+
+    user_challenge = UserChallenge.query.filter_by(habit_id=habit_id).first()
+    if user_challenge is not None:
+        db.session.delete(user_challenge)
+        db.session.commit()
+
+    return jsonify({'status':'success', 'message':'user challenge habit data deleted'}), 204
+
+        
 
 @app.route('/api/challenges', methods=['GET'])
 @login_required
