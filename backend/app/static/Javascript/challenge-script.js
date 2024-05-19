@@ -135,9 +135,14 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
     challengeDiv.querySelector('.challenge-toggle').addEventListener('click', function() {
         this.parentNode.nextElementSibling.classList.toggle('hidden');
     });
+    
     // control delete button display
+    const challengeDeleteButton = challengeDiv.querySelector('.delete-challenge-btn')
+
     if (document.getElementById('user-id').textContent === String(creator_id)){
-        challengeDiv.querySelector('.delete-challenge-btn').style.display = 'block';
+        challengeDeleteButton.style.display = 'block';
+    } else{
+        challengeDeleteButton.remove();
     }
 
     document.getElementById('allChallenges').appendChild(challengeDiv);
