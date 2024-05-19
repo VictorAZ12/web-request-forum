@@ -127,6 +127,7 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
         <div class="challenge-actions hidden">
             <div class="challengeGoal">${challengeGoal} ${challengeUnit} ${frequencyText} </div>
             <button class="join-btn" onclick="joinChallenge('${challengeDivId}')">Join</button>
+            <button id="delete-challenge-btn" class="delete-challenge-btn" onclick="deleteChallenge('${id}')">Delete</button>
         </div>
     `;
 
@@ -134,6 +135,15 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
     challengeDiv.querySelector('.challenge-toggle').addEventListener('click', function() {
         this.parentNode.nextElementSibling.classList.toggle('hidden');
     });
+    
+    // control delete button display
+    const challengeDeleteButton = challengeDiv.querySelector('.delete-challenge-btn')
+
+    if (document.getElementById('user-id').textContent === String(creator_id)){
+        challengeDeleteButton.style.display = 'block';
+    } else{
+        challengeDeleteButton.remove();
+    }
 
     document.getElementById('allChallenges').appendChild(challengeDiv);
 
@@ -299,18 +309,17 @@ function updateChallenge(challengeId, name, baseHabit) {
 }
 
 // Delete a challenge
-function deleteChallenge() {
-    const challengeId = document.getElementById('newChallengeForm').dataset.challengeId;
-    fetch(`/api/challenges/${challengeId}`, {
+function deleteChallenge(challengeId) {
+    fetch(`/api/delete_challenge/${challengeId}`, {
         method: 'DELETE',
         headers: {
             'X-CSRFToken': getCSRFToken()
         }
     })
     .then(() => {
-        const challengeDiv = document.getElementById(challengeId);
-        challengeDiv.parentNode.removeChild(challengeDiv);
-        closeChallengeModal();
+        const challengeDivId = "challenge" + String(challengeId);
+        const challengeDiv = document.getElementById(challengeDivId);
+        challengeDiv.remove();
     })
     .catch(error => console.error('Error deleting challenge:', error));
 }

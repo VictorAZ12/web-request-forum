@@ -305,6 +305,23 @@ def add_challenge_habit(challenge_id):
         else:
             return jsonify({'status':'error', 'message':'form data invalid'}), 400
         
+@app.route('/api/delete_challenge_habit/<int:habit_id>', methods=['DELETE'])
+@login_required
+def delete_challenge_habit(habit_id):
+    '''Delete a habit created from a challenge'''
+    habit = Habit.query.filter_by(id=habit_id).first()
+    if habit is not None:
+        db.session.delete(habit)
+        db.session.commit()
+
+    user_challenge = UserChallenge.query.filter_by(habit_id=habit_id).first()
+    if user_challenge is not None:
+        db.session.delete(user_challenge)
+        db.session.commit()
+
+    return jsonify({'status':'success', 'message':'user challenge habit data deleted'}), 204
+
+        
 
 @app.route('/api/challenges', methods=['GET'])
 @login_required
@@ -333,6 +350,20 @@ def add_challenge():
         return jsonify(challenge.to_dic()), 200
     else:
         return jsonify({'status':'error', 'message':'form data invalid'}), 400
+
+@app.route('/api/delete_challenge/<int:challenge_id>', methods=['DELETE'])
+@login_required
+def delete_challenge(challenge_id):
+    challenge = Challenge.query.filter_by(id=challenge_id).first()
+    if challenge is not None:
+        try:
+            db.session.delete(challenge)
+            db.session.commit()
+            return jsonify({'status':'success', 'message':'Challenge deleted.'}), 200
+        except:
+                return jsonify({'status':'error', 'message':'Something is wrong.'}), 500
+    else:
+        return jsonify({'status':'error', 'message':'Challenge not found'}), 404
 
 @app.route('/api/follow/<int:user_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required

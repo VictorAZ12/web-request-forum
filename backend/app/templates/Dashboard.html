@@ -11,6 +11,7 @@
         <div class="profile">
             <img src="{{ url_for('static', filename='Profile_Image/avatar.jpg') }}" alt="Profile Image" class="profile-img">
             <h2>{{ user.username if user else 'User Name' }}</h2>
+            <div id="user-id" style="display:none;">{{ user.uid }}</div>
         </div>
         <ul class="nav-links">
             <li class="active"><a href="#">All Habits</a></li>
