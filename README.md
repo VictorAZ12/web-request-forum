@@ -32,3 +32,57 @@ HabitNest is a web-based platform designed to enhance productivity and personal 
 - SQLite: Storing user profiles, habits, and community challenge data.
 
 - Secure authentication: Implementing Flask extensions for handling secure user authentication and registration processes.
+## Testing Instructions
+### Front end
+- Environment Setup for Testing
+Install Selenium and Chrome WebDriver
+Ensure you have Python installed. You can download it from python.org.
+Install Selenium using pip:
+```console
+pip install selenium
+```
+Download Chrome WebDriver from ChromeDriver - WebDriver for Chrome and ensure it's in a directory included in your system's PATH.
+
+-Project Setup:
+Navigate to the project directory
+Ensure you have the Flask application running. If not, start it:
+```console
+flask run
+```
+Running the Tests
+Homepage Test:
+Navigate to the directory containing the test script. Run the homepage test script:
+```console
+python test_Selenium_Homepage.py
+```
+
+Login Test:
+Ensure the Flask application is running and you are in the correct directory.
+Run the login test script:
+```console
+python test_Selenium_Login.py
+```
+Dashboard Test:
+Ensure the Flask application is running and you are in the correct directory.
+Run the login test script:
+```console
+python test_Selenium_Dashboard.py
+```
+
+Explanation of Tests
+Homepage Test (test_Selenium_Homepage.py):
+This test script checks the homepage title, clicks the login link, and verifies the presence of the username and password input fields.
+It also attempts to submit the login form and checks the page title after submission.
+
+Registrer (test_Selenium_Register.py):
+This test script checks creation of new account.
+
+Login Test (test_Selenium_Login.py):
+This test script verifies the login functionality by testing with both correct and incorrect credentials.
+For correct credentials, it checks if the user is redirected to the dashboard page.
+For incorrect credentials, it checks if the login fails as expected.
+
+Dashboard Test (test_Selenium_Dashboard.py):
+This test script verifies the add habit and add challenge functionality.
+It also verifies edit habit and delete habit functions. 
+It also verifies join/unjoin challenge. 
