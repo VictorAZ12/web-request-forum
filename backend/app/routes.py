@@ -138,6 +138,9 @@ def get_habits(habit_id):
             # clear progress records
             HabitRecord.query.filter_by(habit=habit_id).delete()
             db.session.commit()
+            # clear challenge records
+            UserChallenge.query.filter_by(habit_id=habit_id).delete()
+            db.session.commit()
             try:
                 db.session.delete(habit)
                 db.session.commit()
@@ -208,7 +211,7 @@ def view_progress(habit_id):
 
 def check_progress(habit_id):
     '''Verify progress of an existing record'''
-
+    print(habit_id)
     habit = Habit.query.filter_by(id=habit_id).first()
     if habit is None:
         return None
@@ -322,7 +325,9 @@ def delete_challenge_habit(habit_id):
     # clear progress records
     HabitRecord.query.filter_by(habit=habit_id).delete()
     db.session.commit()
-
+    # clear challenge record
+    UserChallenge.query.filter_by(habit_id=habit_id).delete()
+    db.session.commit()
     user_challenge = UserChallenge.query.filter_by(habit_id=habit_id).first()
     if user_challenge is not None:
         db.session.delete(user_challenge)
