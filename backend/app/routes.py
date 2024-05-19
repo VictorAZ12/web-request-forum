@@ -334,6 +334,20 @@ def add_challenge():
     else:
         return jsonify({'status':'error', 'message':'form data invalid'}), 400
 
+@app.route('/api/delete_challenge/<int:challenge_id>', methods=['DELETE'])
+@login_required
+def delete_challenge(challenge_id):
+    challenge = Challenge.query.filter_by(id=challenge_id).first()
+    if challenge is not None:
+        try:
+            db.session.delete(challenge)
+            db.session.commit()
+            return jsonify({'status':'success', 'message':'Challenge deleted.'}), 200
+        except:
+                return jsonify({'status':'error', 'message':'Something is wrong.'}), 500
+    else:
+        return jsonify({'status':'error', 'message':'Challenge not found'}), 404
+
 @app.route('/api/follow/<int:user_id>', methods=['GET', 'POST', 'DELETE'])
 @login_required
 def follow_unfollow_user(user_id):
