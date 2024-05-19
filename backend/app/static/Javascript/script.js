@@ -133,19 +133,7 @@ function addHabitToDOM(habit) {
     });
 }
 
-// Update a habit in the DOM
-function updateHabitInDOM(habit) {
-    const habitDiv = document.getElementById(habit.id);
-    habitDiv.querySelector('.habit-name').textContent = habit.habit_name;
-    habitDiv.querySelector('.habit-progress').textContent = `0 / ${habit.habit_goal} ${habit.habit_unit}`;
-}
 
-
-
-function showHabitModal() {
-    document.getElementById('habitModal').style.display = 'block';
-    setMinDate('startDate');
-}
 
 function closeHabitModal() {
     document.getElementById('habitModal').style.display = 'none';
@@ -222,23 +210,6 @@ function checkInHabit(habitDiv) {
         progress.textContent = `${data.completed} / ${data.goal} ${data.unit}`;
     })
     .catch(error => console.error('Error checking in habit:', error));
-}
-
-function failHabit(habitDiv) {
-    const habitId = habitDiv.id;
-    fetch(`/api/habits/${habitId}/fail`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const progress = habitDiv.querySelector('.habit-progress');
-        progress.textContent = `0 / ${data.goal} ${data.unit}`;
-    })
-    .catch(error => console.error('Error failing habit:', error));
 }
 
 function viewHabitProgress(habitDiv) {
