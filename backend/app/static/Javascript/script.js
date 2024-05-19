@@ -61,7 +61,11 @@ function saveHabit() {
     .then(data => {
         closeHabitModal();
         if (isEdit) {
-            updateHabitInDOM(data);
+            const habitsContainer = document.getElementById('habitsContainer');
+            while (habitsContainer.firstChild) {
+                habitsContainer.removeChild(habitsContainer.firstChild);
+            }
+            loadHabits();
         } else {
             addHabitToDOM(data);
         }

@@ -211,7 +211,6 @@ def view_progress(habit_id):
 
 def check_progress(habit_id):
     '''Verify progress of an existing record'''
-    print(habit_id)
     habit = Habit.query.filter_by(id=habit_id).first()
     if habit is None:
         return None
@@ -416,7 +415,6 @@ def get_users():
     ''' Get list of all users '''
     users = User.query.filter_by(public=True).all()
     users_list = [repr(user) for user in users]
-    print(users_list)
     return jsonify(users_list)
 
 
