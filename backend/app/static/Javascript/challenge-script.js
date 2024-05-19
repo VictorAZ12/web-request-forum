@@ -5,7 +5,6 @@ var joinedUsers = {};
 var selectedChallengeId = null;
 document.addEventListener('DOMContentLoaded', function() {
     loadChallenges();
-    // setMinDateForChallenge();
     loadChallengeTypes();
     
 });
@@ -30,29 +29,10 @@ function loadChallenges() {
     .catch(error => console.error('Error loading challenges:', error));
 }
 
-function loadBaseHabits() {
-    fetch('/api/habits', {
-        headers: {
-            'X-CSRFToken': getCSRFToken()
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const baseHabitSelect = document.getElementById('baseHabit');
-        data.forEach(habit => {
-            const option = document.createElement('option');
-            option.value = habit.id;
-            option.textContent = habit.habit_name;
-            baseHabitSelect.appendChild(option);
-        });
-    })
-    .catch(error => console.error('Error loading base habits:', error));
-}
 
 // Show the challenge modal
 function showChallengeModal() {
     challengeModal.style.display = "block";
-    setMinDateForChallenge();
 }
 
 // Close the challenge modal
@@ -61,30 +41,12 @@ function closeChallengeModal() {
     resetChallengeForm();
 }
 
-// Close the view challenge modal
-function closeViewChallengeModal() {
-    viewChallengeModal.style.display = "none";
-}
-
-
-
-// Set the minimum date for the challenge start date input to today
-function setMinDateForChallenge() {
-    var today = new Date().toISOString().split('T')[0];
-    document.getElementById('challengeStartDate').setAttribute('min', today);
-}
 
 // Handle challenge form submission
 document.getElementById('newChallengeForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const challengeName = document.getElementById('challengeName').value;
     addChallenge();
-    // if (this.dataset.isEdit === 'true') {
-    //     const challengeId = this.dataset.challengeId;
-    //     updateChallenge();
-    // } else {
-        
-    // }
     closeChallengeModal();
 });
 
@@ -151,14 +113,6 @@ function addChallengeToDOM(id, challengeName, description, creator_id, challenge
 }
 
 
-
-// Handle confirm unjoin challenge
-function confirmUnjoinChallenge(challengeId) {
-    showConfirmModal("Are you sure you want to unjoin this challenge?", function() {
-        unjoinChallenge(challengeId);
-    });
-}
-
 // Handle join challenge
 function joinChallenge(challengeId) {
     const challengeDiv = document.getElementById(challengeId);
@@ -184,13 +138,7 @@ function joinChallenge(challengeId) {
     document.getElementById('habitFrequency').disabled = true;
     // Enable the start date field
     showHabitModal();
-    // Clone the challenge to the habits page
-    // addHabitToDOM(challengeName, challengeGoal, challengeUnit, challengeStartDate, 'habitsContainer');
 
-    // challengeDiv.querySelector('.join-btn').classList.add('hidden');
-    // challengeDiv.querySelector('.unjoin-btn').classList.remove('hidden');
-    // joinedUsers[challengeId]++;
-    // alert('Joined the challenge!');
 }
 function saveChallengeHabit() {
     // enable fields again
@@ -224,89 +172,6 @@ function saveChallengeHabitHandler(event) {
         saveChallengeHabit();
  }
 
-// Handle unjoin challenge
-function unjoinChallenge(challengeId) {
-    // Remove the habit from the habits container
-    const habitsContainer = document.getElementById('habitsContainer');
-    const habitDivs = habitsContainer.getElementsByClassName('habit');
-    for (let i = 0; i < habitDivs.length; i++) {
-        const habitDiv = habitDivs[i];
-        if (habitDiv.dataset.challengeId === challengeId.toString()) {
-            habitsContainer.removeChild(habitDiv);
-            break;
-        }
-    }
-
-    const challengeDiv = document.getElementById(challengeId);
-    challengeDiv.querySelector('.join-btn').classList.remove('hidden');
-    challengeDiv.querySelector('.unjoin-btn').classList.add('hidden');
-    joinedUsers[challengeId]--;
-    alert('Unjoined the challenge!');
-}
-
-// Handle edit challenge
-function editChallenge(button) {
-    const challengeDiv = button.closest('.challenge');
-    const challengeName = challengeDiv.querySelector('.challenge-name').textContent;
-    const challengeGoal = challengeDiv.querySelector('.challenge-goal').textContent.split(' ')[0];
-    const challengeUnit = challengeDiv.querySelector('.challenge-goal').textContent.split(' ')[1];
-    const challengeStartDate = challengeDiv.querySelector('.challenge-start-date').textContent.split(': ')[1];
-    const habitName = challengeDiv.querySelector('.challenge-habit').textContent.split(': ')[1];
-
-    showChallengeModal();
-    document.getElementById('challengeName').value = challengeName;
-    document.getElementById('baseHabit').value = habitName;
-    document.getElementById('challengeGoal').value = challengeGoal;
-    document.getElementById('challengeUnit').value = challengeUnit;
-    document.getElementById('challengeStartDate').value = challengeStartDate;
-    document.getElementById('newChallengeForm').dataset.isEdit = 'true';
-    document.getElementById('newChallengeForm').dataset.challengeId = challengeDiv.id;
-    document.getElementById('delete-challenge-btn').classList.remove('hidden'); // Show delete button when editing
-}
-
-// Handle view challenge
-function viewChallenge(challengeId) {
-    const challengeDiv = document.getElementById(challengeId);
-    const challengeName = challengeDiv.dataset.name;
-    const habitName = challengeDiv.dataset.habit;
-    const challengeGoal = challengeDiv.dataset.goal;
-    const challengeUnit = challengeDiv.dataset.unit;
-    const challengeStartDate = challengeDiv.dataset.startDate;
-    const joinedCount = joinedUsers[challengeId] || 0;
-
-    const details = `
-        <p>Challenge: ${challengeName}</p>
-        <p>Habit: ${habitName}</p>
-        <p>Goal: ${challengeGoal} ${challengeUnit}</p>
-        <p>Start Date: ${challengeStartDate}</p>
-        <p>Users Joined: ${joinedCount}</p>
-    `;
-    document.getElementById('viewChallengeDetails').innerHTML = details;
-    viewChallengeModal.style.display = 'block';
-}
-
-// Update a challenge
-function updateChallenge(challengeId, name, baseHabit) {
-    fetch(`/api/challenges/${challengeId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken()
-        },
-        body: JSON.stringify({
-            name: name,
-            base_habit: baseHabit
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const challengeDiv = document.getElementById(challengeId);
-        challengeDiv.querySelector('.challenge-name').textContent = name;
-        challengeDiv.dataset.name = name;
-        challengeDiv.dataset.habit = baseHabit;
-    })
-    .catch(error => console.error('Error updating challenge:', error));
-}
 
 // Delete a challenge
 function deleteChallenge(challengeId) {
@@ -332,10 +197,6 @@ function resetChallengeForm() {
     document.getElementById('delete-challenge-btn').classList.add('hidden'); // Hide delete button after closing
 }
 
-// Initial setup (obsolete)
-// document.addEventListener('DOMContentLoaded', function() {
-//     setMinDateForChallenge(); // Ensure the min date is set when the page loads
-// });
 
 // load challenge types
 function loadChallengeTypes() {
